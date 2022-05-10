@@ -1,12 +1,14 @@
 ﻿using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
+using System;
 using System.Collections.Generic;
 
 namespace LoanMod
 {
     public partial class ModEntry
     {
+        private List<Response> menuItems, repayMenuItems, durationMenu, menuYesNo;
         private void InitMenus()
         {
             menuItems = new List<Response>
@@ -15,32 +17,39 @@ namespace LoanMod
                 new Response("money_1k", $"{Config.MoneyAmount2}g"),
                 new Response("money_5k", $"{Config.MoneyAmount3}g"),
                 new Response("money_10k", $"{Config.MoneyAmount4}g"),
-                new Response("money_Cancel", i18n.Get("menu.cancel"))
+                new Response("money_Cancel", I18n.Get("menu.cancel"))
             };
 
             durationMenu = new List<Response>
             {
-                new Response("time_3D", $"{Config.DayLength1} {i18n.Get("menu.days")} @ {Config.InterestModifier1 * 100}%"),
-                new Response("time_7D", $"{Config.DayLength2} {i18n.Get("menu.days")} @ {Config.InterestModifier2 * 100}%"),
-                new Response("time_14D", $"{Config.DayLength3} {i18n.Get("menu.days")} @ {Config.InterestModifier3 * 100}%"),
-                new Response("time_28D", $"{Config.DayLength4} {i18n.Get("menu.days")} @ {Config.InterestModifier4 * 100}%"),
-                new Response("time_Cancel", i18n.Get("menu.cancel"))
+                new Response("time_3D", $"{Config.DayLength1} {I18n.Get("menu.days")} @ {Config.InterestModifier1 * 100}%"),
+                new Response("time_7D", $"{Config.DayLength2} {I18n.Get("menu.days")} @ {Config.InterestModifier2 * 100}%"),
+                new Response("time_14D", $"{Config.DayLength3} {I18n.Get("menu.days")} @ {Config.InterestModifier3 * 100}%"),
+                new Response("time_28D", $"{Config.DayLength4} {I18n.Get("menu.days")} @ {Config.InterestModifier4 * 100}%"),
+                new Response("time_Cancel", I18n.Get("menu.cancel"))
             };
 
             repayMenuItems = new List<Response>
             {
-                new Response("repay_show_Balance", i18n.Get("menu.showbalance")),
-                new Response("repay_Full", i18n.Get("menu.repayfull")),
-                new Response("repay_Leave", i18n.Get("menu.leave"))
+                new Response("repay_show_Balance", I18n.Get("menu.showbalance")),
+                new Response("repay_Full", I18n.Get("menu.repayfull")),
+                new Response("repay_Leave", I18n.Get("menu.leave"))
             };
 
             menuYesNo = new List<Response>
             {
-                new Response("menu_Yes", i18n.Get("menu.yes")),
-                new Response("menu_No", i18n.Get("menu.no")),
-                new Response("menu_Leave", i18n.Get("menu.leave"))
+                new Response("menu_Yes", I18n.Get("menu.yes")),
+                new Response("menu_No", I18n.Get("menu.no")),
+                new Response("menu_Leave", I18n.Get("menu.leave"))
             };
         }
+
+        //private void StartMobileBorrow()
+        //{
+        //    mobileApi.SetAppRunning(true);
+        //    mobileApi.SetRunningApp(Helper.ModRegistry.ModID);
+        //    StartBorrow(1, "Key_Amount");
+        //}
 
         private void StartBorrow(int stage, string key)
         {
@@ -52,13 +61,13 @@ namespace LoanMod
                 {
                     case 1:
                         if (Config.CustomMoneyInput)
-                            Game1.activeClickableMenu = new NumberSelectionMenu(i18n.Get("msg.startborrow-1"), (val, cost, farmer) => ProcessBorrowing(val, cost, farmer, key), -1, 100, 999999, 500);
+                            Game1.activeClickableMenu = new NumberSelectionMenu(I18n.Get("msg.startborrow-1"), (val, cost, farmer) => ProcessBorrowing(val, cost, farmer, key), -1, 100, 999999, 500);
                         else
-                            Gamer.createQuestionDialogue(i18n.Get("msg.startborrow-1"), menuItems.ToArray(), BorrowMenu);
+                            Gamer.createQuestionDialogue(I18n.Get("msg.startborrow-1"), menuItems.ToArray(), BorrowMenu);
                         break;
                     case 2:
                         //Game1.activeClickableMenu = new NumberSelectionMenu(i18n.Get("msg.startborrow-2"), (val, cost, farmer) => ProcessBorrowing(val, cost, farmer, key), -1, 1);
-                        Gamer.createQuestionDialogue(i18n.Get("msg.startborrow-2"), durationMenu.ToArray(), BorrowDuration);
+                        Gamer.createQuestionDialogue(I18n.Get("msg.startborrow-2"), durationMenu.ToArray(), BorrowDuration);
                         break;
                 }
             }
@@ -67,13 +76,16 @@ namespace LoanMod
                 switch (stage)
                 {
                     case 1:
-                        Gamer.createQuestionDialogue(i18n.Get("msg.menu-1"), repayMenuItems.ToArray(), RepayMenu);
+                        Gamer.createQuestionDialogue(I18n.Get("msg.menu-1"), repayMenuItems.ToArray(), RepayMenu);
                         break;
                     case 3:
-                        Gamer.createQuestionDialogue(i18n.Get("msg.menu-2", new { Balance = loanManager.Balance }), menuYesNo.ToArray(), RepayFullMenu);
+                        Gamer.createQuestionDialogue(I18n.Get("msg.menu-2", new { loanManager.Balance }), menuYesNo.ToArray(), RepayFullMenu);
                         break;
                 }
             }
+
+            //if (mobileApi?.GetRunningApp() == Helper.ModRegistry.ModID)
+            //    mobileApi.SetAppRunning(false);
         }
 
         private void ProcessBorrowing(int val, int cost, Farmer who, string key)
@@ -87,8 +99,6 @@ namespace LoanMod
                     Game1.activeClickableMenu = null;
                     StartBorrow(2, "Key_Duration");
                     break;
-                default:
-                    break;
             }
         }
 
@@ -99,28 +109,26 @@ namespace LoanMod
                 case "money_500":
                     amount = Config.MoneyAmount1;
                     borrowProcess = true;
-                    this.Monitor.Log($"Selected 500g.", LogLevel.Info);
+                    this.Monitor.Log("Selected 500g.", LogLevel.Info);
                     break;
                 case "money_1k":
                     amount = Config.MoneyAmount2;
                     borrowProcess = true;
-                    this.Monitor.Log($"Selected 1,000g.", LogLevel.Info);
+                    this.Monitor.Log("Selected 1,000g.", LogLevel.Info);
                     break;
                 case "money_5k":
                     amount = Config.MoneyAmount3;
                     borrowProcess = true;
-                    this.Monitor.Log($"Selected 5,000g.", LogLevel.Info);
+                    this.Monitor.Log("Selected 5,000g.", LogLevel.Info);
                     break;
                 case "money_10k":
                     amount = Config.MoneyAmount4;
                     borrowProcess = true;
-                    this.Monitor.Log($"Selected 10,000g.", LogLevel.Info);
+                    this.Monitor.Log("Selected 10,000g.", LogLevel.Info);
                     break;
                 case "money_Cancel":
                     borrowProcess = false;
-                    this.Monitor.Log($"Option Cancel");
-                    break;
-                default:
+                    this.Monitor.Log("Option Cancel");
                     break;
             }
         }
@@ -151,9 +159,7 @@ namespace LoanMod
                     break;
                 case "time_Cancel":
                     borrowProcess = false;
-                    this.Monitor.Log($"Option Cancel");
-                    break;
-                default:
+                    Monitor.Log("Option Cancel");
                     break;
             }
         }
@@ -162,17 +168,15 @@ namespace LoanMod
             switch (option)
             {
                 case "repay_show_Balance":
-                    this.Monitor.Log($"Option show balance", LogLevel.Info);
-                    Game1.addHUDMessage(new HUDMessage(i18n.Get("msg.payment.remaining", new { Balance = loanManager.Balance, Duration = loanManager.Duration, DailyAmount = loanManager.DailyAmount }), HUDMessage.newQuest_type));
+                    Monitor.Log("Option show balance", LogLevel.Info);
+                    Game1.addHUDMessage(new HUDMessage(I18n.Get("msg.payment.remaining", new { loanManager.Balance, loanManager.Duration, loanManager.DailyAmount }), HUDMessage.newQuest_type));
                     break;
                 case "repay_Full":
-                    this.Monitor.Log($"Option repay Full", LogLevel.Info);
+                    Monitor.Log("Option repay Full", LogLevel.Info);
                     repayProcess = true;
                     break;
                 case "repay_Leave":
-                    this.Monitor.Log($"Option Leave", LogLevel.Info);
-                    break;
-                default:
+                    Monitor.Log("Option Leave", LogLevel.Info);
                     break;
             }
         }
@@ -181,19 +185,16 @@ namespace LoanMod
             switch (option)
             {
                 case "menu_Yes":
-                    this.Monitor.Log($"Option Yes", LogLevel.Info);
+                    Monitor.Log("Option Yes", LogLevel.Info);
                     InitiateRepayment(true);
-                    Game1.addHUDMessage(new HUDMessage(i18n.Get("msg.payment.full"), HUDMessage.achievement_type));
                     break;
                 case "menu_No":
-                    this.Monitor.Log($"Option No", LogLevel.Info);
+                    Monitor.Log("Option No", LogLevel.Info);
                     repayProcess = false;
                     break;
                 case "menu_Leave":
-                    this.Monitor.Log($"Option Leave", LogLevel.Info);
+                    Monitor.Log("Option Leave", LogLevel.Info);
                     repayProcess = false;
-                    break;
-                default:
                     break;
             }
         }

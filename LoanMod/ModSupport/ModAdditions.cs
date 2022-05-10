@@ -1,6 +1,9 @@
 ﻿using GenericModConfigMenu;
+using Microsoft.Xna.Framework.Graphics;
+using StardewModdingAPI;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,25 +12,33 @@ namespace LoanMod
 {
     public partial class ModEntry
     {
-        private void AddConfigItems()
+        private IMobilePhoneApi mobileApi;
+        private void AddModFunctions()
         {
             var configMenu = this.Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
-            if (configMenu is null)
-                return;
+            if (configMenu != null)
+            {
+                // register mod
+                configMenu.Register(
+                    mod: this.ModManifest,
+                    reset: () => this.Config = new ModConfig(),
+                    save: () => this.Helper.WriteConfig(this.Config)
+                );
 
-            // register mod
-            configMenu.Register(
-                mod: this.ModManifest,
-                reset: () => this.Config = new ModConfig(),
-                save: () => this.Helper.WriteConfig(this.Config)
-            );
+                MainSection(configMenu);
+                DurationSection(configMenu);
+                InterestSection(configMenu);
+                LegacyMoneySection(configMenu);
+            }
 
-            MainSection(configMenu);
-            DurationSection(configMenu);
-            InterestSection(configMenu);
-            LegacyMoneySection(configMenu);
+            mobileApi = this.Helper.ModRegistry.GetApi<IMobilePhoneApi>("aedenthorn.MobilePhone");
+            if (mobileApi != null)
+            {
+                Texture2D appIcon = Helper.ModContent.Load<Texture2D>(Path.Combine("assets", "app_icon.png"));
+                bool success = mobileApi.AddApp(Helper.ModRegistry.ModID, "Loans", () => StartBorrow(1, "Key_Amount"), appIcon);
+                Monitor.Log($"loaded phone app successfully: {success}", LogLevel.Debug);
+            }
         }
-
 
         private void MainSection(IGenericModConfigMenuApi configMenu)
         {
@@ -52,6 +63,13 @@ namespace LoanMod
                 setValue: value => this.Config.CustomMoneyInput = value
             );
 
+            configMenu.AddBoolOption(
+                mod: this.ModManifest,
+                name: () => "Reset Loan Profile",
+                tooltip: () => "Resets the loan profile on the next save file you load.",
+                getValue: () => this.Config.Reset,
+                setValue: value => this.Config.Reset = value
+            );
         }
         private void LegacyMoneySection(IGenericModConfigMenuApi configMenu)
         {
@@ -156,28 +174,28 @@ namespace LoanMod
             configMenu.AddNumberOption(
                 mod: this.ModManifest,
                 getValue: () => this.Config.InterestModifier1,
-                setValue: value => this.Config.InterestModifier1 = (int)value,
+                setValue: value => this.Config.InterestModifier1 = (float)value,
                 name: () => "Interest Modifier 1"
             );
 
             configMenu.AddNumberOption(
                 mod: this.ModManifest,
                 getValue: () => this.Config.InterestModifier2,
-                setValue: value => this.Config.InterestModifier2 = (int)value,
+                setValue: value => this.Config.InterestModifier2 = (float)value,
                 name: () => "Interest Modifier 2"
             );
 
             configMenu.AddNumberOption(
                 mod: this.ModManifest,
                 getValue: () => this.Config.InterestModifier3,
-                setValue: value => this.Config.InterestModifier3 = (int)value,
+                setValue: value => this.Config.InterestModifier3 = (float)value,
                 name: () => "Interest Modifier 3"
             );
 
             configMenu.AddNumberOption(
                 mod: this.ModManifest,
                 getValue: () => this.Config.InterestModifier4,
-                setValue: value => this.Config.InterestModifier4 = (int)value,
+                setValue: value => this.Config.InterestModifier4 = (float)value,
                 name: () => "Interest Modifier 4"
             );
         }

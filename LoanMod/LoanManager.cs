@@ -30,7 +30,7 @@ namespace LoanMod
             /// <summary>
             /// <param name="hasPaid">Indicates if the player has already made a payment on the current day.</param>
             /// </summary>
-            public bool hasPaid { get; set; } = false;
+            public bool HasPaid { get; set; } = false;
             /// <summary>
             /// <param name="DailyAmount">Shows the daily repayment amount.</param>
             /// </summary>
@@ -51,6 +51,7 @@ namespace LoanMod
             /// <param name="LateDays">Shows the days of late payments.</param>
             /// </summary>
             public int LateDays { get; set; } = 0;
+
             /// <summary>
             /// <param name="CalculateBalance">Calculates the current balance remaining to be paid off.</param>
             /// </summary>
@@ -61,11 +62,10 @@ namespace LoanMod
                     double bal = (AmountBorrowed - AmountRepaid);
                     double balinterest = bal * Interest;
 
-                    var result = Math.Round(bal + balinterest, MidpointRounding.AwayFromZero);
-
-                    return result;
+                    return Math.Round(bal + balinterest, MidpointRounding.AwayFromZero);
                 }
             }
+
             /// <summary>
             /// <param name="CalculateDailyAmount">Calculates the daily amount based on the balance left to pay.</param>
             /// </summary>
@@ -74,12 +74,10 @@ namespace LoanMod
                 get
                 {
                     double daily = CalculateBalance / Duration;
-
-                    var result = Math.Round(daily, MidpointRounding.AwayFromZero);
-
-                    return result;
+                    return Math.Round(daily, MidpointRounding.AwayFromZero);
                 }
             }
+
             /// <summary>
             /// <param name="CalculateLateFees">Calculates the late payment fee amount based on the balance left to pay.</param>
             /// </summary>
@@ -88,12 +86,10 @@ namespace LoanMod
                 get
                 {
                     double daily = (Balance * LateChargeRate);
-
-                    var result = Math.Round(daily, MidpointRounding.AwayFromZero);
-
-                    return result;
+                    return Math.Round(daily, MidpointRounding.AwayFromZero);
                 }
             }
+
             /// <summary>
             /// Estimates interest based on the amount and days.
             /// </summary>
@@ -101,7 +97,7 @@ namespace LoanMod
             /// <param name="days">The duration of the loan.</param>
             /// <param name="cfg">The config file used.</param>
             /// <returns>Interest rate as float.</returns>
-            internal double EstimateInterest(int borrowAmount, int days, ModConfig cfg)
+            internal static double EstimateInterest(int borrowAmount, int days, ModConfig cfg)
             {
                 float interestFromAmount = 0;
                 float interestFromDays = 0;
@@ -142,6 +138,7 @@ namespace LoanMod
 
                 return interestFromAmount + interestFromDays;
             }
+
             /// <summary>
             /// <param name="InitiateReset">Resets the mod.</param>
             /// </summary>
@@ -152,11 +149,10 @@ namespace LoanMod
                 Duration = 0;
                 Interest = 0;
                 AmountRepaid = 0;
-                hasPaid = false;
+                HasPaid = false;
                 Balance = 0;
                 DailyAmount = 0;
             }
-
         }
     }
 }

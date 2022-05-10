@@ -7,15 +7,10 @@ namespace LoanMod
 {
     public partial class ModEntry
     {
-        private List<Response> menuItems, repayMenuItems, durationMenu, menuYesNo;
-        private void Log(object message)
-        { 
-            this.Monitor.Log(Convert.ToString(message), LogLevel.Info); 
-        }
 
-        private void AddMessage(string message)
+        private void AddMessage(string message, int messageType)
         {
-            Game1.addHUDMessage(new HUDMessage(message, HUDMessage.achievement_type));
+            Game1.addHUDMessage(new HUDMessage(message, messageType));
         }
     }
 }
