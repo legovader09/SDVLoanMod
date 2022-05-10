@@ -29,6 +29,7 @@ namespace LoanMod
                 DurationSection(configMenu);
                 InterestSection(configMenu);
                 LegacyMoneySection(configMenu);
+                AdvancedSelection(configMenu);
             }
 
             mobileApi = this.Helper.ModRegistry.GetApi<IMobilePhoneApi>("aedenthorn.MobilePhone");
@@ -38,6 +39,35 @@ namespace LoanMod
                 bool success = mobileApi.AddApp(Helper.ModRegistry.ModID, "Loans", () => StartBorrow(1, "Key_Amount"), appIcon);
                 Monitor.Log($"loaded phone app successfully: {success}", LogLevel.Debug);
             }
+        }
+
+        private void AdvancedSelection(IGenericModConfigMenuApi configMenu)
+        {
+            configMenu.AddSectionTitle(
+                mod: this.ModManifest,
+                text: () => "Advanced Options"
+            );
+
+            configMenu.AddParagraph(
+                mod: this.ModManifest,
+                text: () => "Only modify these values if you absolutely have to."
+            );
+
+            configMenu.AddBoolOption(
+                mod: this.ModManifest,
+                name: () => "Use Input Box vs Dialog Boxes",
+                tooltip: () => "Uses input box to enter a custom amount of money to borrow.",
+                getValue: () => this.Config.CustomMoneyInput,
+                setValue: value => this.Config.CustomMoneyInput = value
+            );
+
+            configMenu.AddBoolOption(
+                mod: this.ModManifest,
+                name: () => "Reset Loan Profile",
+                tooltip: () => "Resets the loan profile on the next save file you load.",
+                getValue: () => this.Config.Reset,
+                setValue: value => this.Config.Reset = value
+            );
         }
 
         private void MainSection(IGenericModConfigMenuApi configMenu)
@@ -55,20 +85,13 @@ namespace LoanMod
                 tooltip: () => "Change the button to press to open the loan menu."
             );
 
-            configMenu.AddBoolOption(
+            configMenu.AddNumberOption(
                 mod: this.ModManifest,
-                name: () => "Use Input Box vs Dialog Boxes",
-                tooltip: () => "Uses input box to enter a custom amount of money to borrow.",
-                getValue: () => this.Config.CustomMoneyInput,
-                setValue: value => this.Config.CustomMoneyInput = value
-            );
-
-            configMenu.AddBoolOption(
-                mod: this.ModManifest,
-                name: () => "Reset Loan Profile",
-                tooltip: () => "Resets the loan profile on the next save file you load.",
-                getValue: () => this.Config.Reset,
-                setValue: value => this.Config.Reset = value
+                getValue: () => this.Config.LatePaymentChargeRate,
+                setValue: value => this.Config.LatePaymentChargeRate = (float)value,
+                name: () => "Late Payment Interest Rate",
+                min: 0f,
+                interval: 100f
             );
         }
         private void LegacyMoneySection(IGenericModConfigMenuApi configMenu)
