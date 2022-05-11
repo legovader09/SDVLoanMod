@@ -165,7 +165,7 @@ namespace LoanMod
 
             if (loanManager == null || Config.Reset)
             {
-                loanManager.InitiateReset();
+                loanManager = new LoanManager();
                 Config.Reset = false;
                 AddMessage(I18n.Get("msg.create"), HUDMessage.achievement_type);
             }
