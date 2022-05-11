@@ -11,13 +11,14 @@ namespace LoanMod
         private bool borrowProcess, repayProcess;
         private int amount, duration;
         private float interest;
-        internal ITranslationHelper I18n => Helper.Translation;
+        //internal ITranslationHelper I18n => Helper.Translation;
         private LoanManager loanManager;
 
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e) => AddModFunctions();
 
         public override void Entry(IModHelper helper)
         {
+            I18n.Init(helper.Translation);
             helper.Events.Input.ButtonPressed += OnButtonPressed;
             helper.Events.GameLoop.SaveLoaded += GameLoaded;
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
@@ -28,7 +29,6 @@ namespace LoanMod
 
             Config = helper.ReadConfig<ModConfig>();
 
-            InitMenus();
         }
 
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
@@ -79,7 +79,7 @@ namespace LoanMod
             this.duration = 0;
             this.interest = 0;
 
-            AddMessage(I18n.Get("msg.payment.credited", new { creditAmount = loanManager.AmountBorrowed }), HUDMessage.achievement_type);
+            AddMessage(I18n.Msg_Payment_Credited(loanManager.AmountBorrowed), HUDMessage.achievement_type);
 
             if (mobileApi?.GetRunningApp() == Helper.ModRegistry.ModID)
                 mobileApi.SetAppRunning(false);
@@ -96,11 +96,11 @@ namespace LoanMod
                     {   //Repays the remaining balance
                         Game1.player.Money -= loanManager.Balance;
                         loanManager.InitiateReset();
-                        AddMessage(I18n.Get("msg.payment.full"), HUDMessage.achievement_type);
+                        AddMessage(I18n.Msg_Payment_Full(), HUDMessage.achievement_type);
                     }
                     else
                     {
-                        AddMessage(I18n.Get("msg.payment.failed", new { DailyAmount = loanManager.Balance }), HUDMessage.error_type);
+                        AddMessage(I18n.Msg_Payment_Failed(loanManager.Balance), HUDMessage.error_type);
                     }
                     repayProcess = false;
                     return;
@@ -124,7 +124,7 @@ namespace LoanMod
                             //Repays the remaining balance
                             Game1.player.Money -= loanManager.Balance;
                             loanManager.IsBorrowing = false;
-                            AddMessage(I18n.Get("msg.payment.full"), HUDMessage.achievement_type);
+                            AddMessage(I18n.Msg_Payment_Full(), HUDMessage.achievement_type);
                         }
                         loanManager.HasPaid = true;
 
@@ -137,15 +137,15 @@ namespace LoanMod
                         {
                             loanManager.LateChargeRate = Config.LatePaymentChargeRate;
                             loanManager.LateChargeAmount = (int)loanManager.CalculateLateFees;
-                            AddMessage(I18n.Get("msg.payment.failed", new { loanManager.DailyAmount }), HUDMessage.error_type);
+                            AddMessage(I18n.Msg_Payment_Failed(loanManager.DailyAmount), HUDMessage.error_type);
                             if (loanManager.LateDays == 0)
                             {
-                                Game1.addHUDMessage(new HUDMessage(I18n.Get("msg.payment.missed-1", new { loanManager.LateChargeAmount }), HUDMessage.error_type));
+                                Game1.addHUDMessage(new HUDMessage(I18n.Msg_Payment_Missed1(loanManager.LateChargeAmount), HUDMessage.error_type));
                                 loanManager.LateDays++;
                             }
                             else
                             {
-                                Game1.addHUDMessage(new HUDMessage(I18n.Get("msg.payment.missed-2", new { loanManager.LateChargeAmount }), HUDMessage.error_type));
+                                Game1.addHUDMessage(new HUDMessage(I18n.Msg_Payment_Missed2(loanManager.LateChargeAmount), HUDMessage.error_type));
                                 loanManager.Balance += loanManager.LateChargeAmount;
                             }
                         }
@@ -157,7 +157,8 @@ namespace LoanMod
 
         private void GameLoaded(object sender, SaveLoadedEventArgs e)
         {
-            Monitor.Log("Current Locale: " + I18n.LocaleEnum, LogLevel.Info);
+            Monitor.Log("Current Locale: " + Helper.Translation.LocaleEnum, LogLevel.Info);
+            InitMenus();
 
             //checks if player is currently taking any loans, if so it will load all the loan data.
             if (Game1.player.IsMainPlayer)
@@ -167,7 +168,7 @@ namespace LoanMod
             {
                 loanManager = new LoanManager();
                 Config.Reset = false;
-                AddMessage(I18n.Get("msg.create"), HUDMessage.achievement_type);
+                AddMessage(I18n.Msg_Create(), HUDMessage.achievement_type);
             }
         }
 
@@ -178,7 +179,7 @@ namespace LoanMod
             {
                 if (loanManager.HasPaid)
                 {
-                    AddMessage(I18n.Get("msg.payment.complete", new { loanManager.DailyAmount }), HUDMessage.achievement_type);
+                    AddMessage(I18n.Msg_Payment_Complete(loanManager.DailyAmount), HUDMessage.achievement_type);
                     loanManager.HasPaid = false;
                 }
                 if (loanManager.Balance < loanManager.DailyAmount) { loanManager.DailyAmount = loanManager.Balance; }
@@ -192,7 +193,7 @@ namespace LoanMod
             {
                 Monitor.Log($"Amount Borrowed vs Repaid: {loanManager.AmountBorrowed} / {loanManager.AmountRepaid}, Duration: {loanManager.Duration}. Interest: {loanManager.Interest}", LogLevel.Info);
                 loanManager.InitiateReset();
-                AddMessage(I18n.Get("msg.payment.error"), HUDMessage.error_type);
+                AddMessage(I18n.Msg_Payment_Error(), HUDMessage.error_type);
             }
         }
 
