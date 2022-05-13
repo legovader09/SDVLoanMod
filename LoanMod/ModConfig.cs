@@ -8,6 +8,7 @@ namespace LoanMod
         {
             public SButton LoanButton { get; set; } = SButton.L;
             public bool CustomMoneyInput { get; set; } = true;
+            public int MaxBorrowAmount { get; set; } = 1000000;
             public float LatePaymentChargeRate { get; set; } = 0.1F;
             public float InterestModifier1 { get; set; } = 0.5F;
             public float InterestModifier2 { get; set; } = 0.25F;

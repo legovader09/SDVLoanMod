@@ -93,6 +93,15 @@ namespace LoanMod
                 min: 0f,
                 interval: 100f
             );
+
+            configMenu.AddNumberOption(
+                mod: this.ModManifest,
+                getValue: () => this.Config.MaxBorrowAmount,
+                setValue: value => this.Config.MaxBorrowAmount = (int)value,
+                name: () => "Maximum Borrow Amount",
+                min: 100f,
+                interval: 100f
+            );
         }
         private void LegacyMoneySection(IGenericModConfigMenuApi configMenu)
         {
