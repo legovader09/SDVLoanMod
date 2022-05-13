@@ -79,7 +79,7 @@ namespace LoanMod
                         Gamer.createQuestionDialogue(I18n.Msg_Menu1(), repayMenuItems.ToArray(), RepayMenu);
                         break;
                     case 3:
-                        Gamer.createQuestionDialogue(I18n.Msg_Menu2(loanManager.Balance), menuYesNo.ToArray(), RepayFullMenu);
+                        Gamer.createQuestionDialogue(I18n.Msg_Menu2(loanManager.Balance.ToString("N0")), menuYesNo.ToArray(), RepayFullMenu);
                         break;
                 }
             }
@@ -169,7 +169,7 @@ namespace LoanMod
             {
                 case "repay_show_Balance":
                     Monitor.Log("Option show balance", LogLevel.Debug);
-                    Game1.addHUDMessage(new HUDMessage(I18n.Msg_Payment_Remaining(loanManager.Balance, loanManager.Duration, loanManager.DailyAmount), HUDMessage.newQuest_type));
+                    Game1.addHUDMessage(new HUDMessage(I18n.Msg_Payment_Remaining(loanManager.Balance.ToString("N0"), loanManager.Duration, loanManager.DailyAmount.ToString("N0")), HUDMessage.newQuest_type));
                     break;
                 case "repay_Custom":
                     Monitor.Log("Option repay custom", LogLevel.Debug);

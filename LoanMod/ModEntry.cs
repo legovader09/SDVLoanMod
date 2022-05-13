@@ -110,7 +110,7 @@ namespace LoanMod
             this.duration = 0;
             this.interest = 0;
 
-            AddMessage(I18n.Msg_Payment_Credited(loanManager.AmountBorrowed), HUDMessage.achievement_type);
+            AddMessage(I18n.Msg_Payment_Credited(loanManager.AmountBorrowed.ToString("N0")), HUDMessage.achievement_type);
 
             if (mobileApi?.GetRunningApp() == Helper.ModRegistry.ModID)
                 mobileApi.SetAppRunning(false);
@@ -141,7 +141,7 @@ namespace LoanMod
                             if (DailyAmountBeforeCustomPayment == 0)
                                 DailyAmountBeforeCustomPayment = loanManager.DailyAmount;
                             loanManager.DailyAmount = Math.Max(loanManager.DailyAmount - val, 0);
-                            AddMessage(I18n.Msg_Payment_Complete(val), HUDMessage.achievement_type);
+                            AddMessage(I18n.Msg_Payment_Complete(val.ToString("N0")), HUDMessage.achievement_type);
                         }
                         Game1.activeClickableMenu = null;
                     }, -1, 1, loanManager.Balance, Math.Min(loanManager.DailyAmount, loanManager.Balance));
@@ -156,7 +156,7 @@ namespace LoanMod
                     }
                     else
                     {
-                        AddMessage(I18n.Msg_Payment_Failed(loanManager.Balance), HUDMessage.error_type);
+                        AddMessage(I18n.Msg_Payment_Failed(loanManager.Balance.ToString("N0")), HUDMessage.error_type);
                     }
                     repayProcess = false;
                     return;
@@ -191,15 +191,15 @@ namespace LoanMod
                         {
                             loanManager.LateChargeRate = Config.LatePaymentChargeRate;
                             loanManager.LateChargeAmount = (int)loanManager.CalculateLateFees;
-                            AddMessage(I18n.Msg_Payment_Failed(loanManager.DailyAmount), HUDMessage.error_type);
+                            AddMessage(I18n.Msg_Payment_Failed(loanManager.DailyAmount.ToString("N0")), HUDMessage.error_type);
                             if (loanManager.LateDays == 0)
                             {
-                                Game1.addHUDMessage(new HUDMessage(I18n.Msg_Payment_Missed1(loanManager.LateChargeAmount), HUDMessage.error_type));
+                                Game1.addHUDMessage(new HUDMessage(I18n.Msg_Payment_Missed1(loanManager.LateChargeAmount.ToString("N0")), HUDMessage.error_type));
                                 loanManager.LateDays++;
                             }
                             else
                             {
-                                Game1.addHUDMessage(new HUDMessage(I18n.Msg_Payment_Missed2(loanManager.LateChargeAmount), HUDMessage.error_type));
+                                Game1.addHUDMessage(new HUDMessage(I18n.Msg_Payment_Missed2(loanManager.LateChargeAmount.ToString("N0")), HUDMessage.error_type));
                                 loanManager.Balance += loanManager.LateChargeAmount;
                             }
                         }
@@ -236,7 +236,7 @@ namespace LoanMod
                 if (loanManager.HasPaid)
                 {
                     if (loanManager.DailyAmount > 0) 
-                        AddMessage(I18n.Msg_Payment_Complete(loanManager.DailyAmount), HUDMessage.achievement_type);
+                        AddMessage(I18n.Msg_Payment_Complete(loanManager.DailyAmount.ToString("N0")), HUDMessage.achievement_type);
                     if (DailyAmountBeforeCustomPayment > 0)
                     {
                         loanManager.DailyAmount = DailyAmountBeforeCustomPayment;
