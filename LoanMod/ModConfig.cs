@@ -6,8 +6,16 @@ namespace LoanMod
     {
         internal class ModConfig
         {
+            private int MAX_LOAN_INT = 99999999;
+            private int maxBorrowAmount = 1000000;
+
             public SButton LoanButton { get; set; } = SButton.L;
             public bool CustomMoneyInput { get; set; } = true;
+            public int MaxBorrowAmount
+            {
+                get => maxBorrowAmount;
+                set => maxBorrowAmount = value > MAX_LOAN_INT ? MAX_LOAN_INT : value;
+            }
             public float LatePaymentChargeRate { get; set; } = 0.1F;
             public float InterestModifier1 { get; set; } = 0.5F;
             public float InterestModifier2 { get; set; } = 0.25F;

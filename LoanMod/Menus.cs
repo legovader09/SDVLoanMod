@@ -31,6 +31,7 @@ namespace LoanMod
             repayMenuItems = new List<Response>
             {
                 new Response("repay_show_Balance", I18n.Menu_Showbalance()),
+                new Response("repay_Custom", I18n.Menu_Repaycustom()),
                 new Response("repay_Full", I18n.Menu_Repayfull()),
                 new Response("repay_Leave", I18n.Menu_Leave())
             };
@@ -60,7 +61,7 @@ namespace LoanMod
                 {
                     case 1:
                         if (Config.CustomMoneyInput)
-                            Game1.activeClickableMenu = new NumberSelectionMenu(I18n.Msg_Startborrow1(), (val, cost, farmer) => ProcessBorrowing(val, cost, farmer, key), -1, 100, 999999, 500);
+                            Game1.activeClickableMenu = new NumberSelectionMenu(I18n.Msg_Startborrow1(), (val, cost, farmer) => ProcessBorrowing(val, key), -1, 100, Config.MaxBorrowAmount, 500);
                         else
                             Gamer.createQuestionDialogue(I18n.Msg_Startborrow1(), menuItems.ToArray(), BorrowMenu);
                         break;
@@ -78,7 +79,7 @@ namespace LoanMod
                         Gamer.createQuestionDialogue(I18n.Msg_Menu1(), repayMenuItems.ToArray(), RepayMenu);
                         break;
                     case 3:
-                        Gamer.createQuestionDialogue(I18n.Msg_Menu2(loanManager.Balance), menuYesNo.ToArray(), RepayFullMenu);
+                        Gamer.createQuestionDialogue(I18n.Msg_Menu2(loanManager.Balance.ToString("N0")), menuYesNo.ToArray(), RepayFullMenu);
                         break;
                 }
             }
@@ -87,7 +88,7 @@ namespace LoanMod
             //    mobileApi.SetAppRunning(false);
         }
 
-        private void ProcessBorrowing(int val, int cost, Farmer who, string key)
+        private void ProcessBorrowing(int val, string key)
         {
             switch (key)
             {
@@ -167,15 +168,19 @@ namespace LoanMod
             switch (option)
             {
                 case "repay_show_Balance":
-                    Monitor.Log("Option show balance", LogLevel.Info);
-                    Game1.addHUDMessage(new HUDMessage(I18n.Msg_Payment_Remaining(loanManager.Balance, loanManager.Duration, loanManager.DailyAmount), HUDMessage.newQuest_type));
+                    Monitor.Log("Option show balance", LogLevel.Debug);
+                    Game1.addHUDMessage(new HUDMessage(I18n.Msg_Payment_Remaining(loanManager.Balance.ToString("N0"), loanManager.Duration, loanManager.DailyAmount.ToString("N0")), HUDMessage.newQuest_type));
+                    break;
+                case "repay_Custom":
+                    Monitor.Log("Option repay custom", LogLevel.Debug);
+                    InitiateRepayment(false, true);
                     break;
                 case "repay_Full":
-                    Monitor.Log("Option repay Full", LogLevel.Info);
+                    Monitor.Log("Option repay Full", LogLevel.Debug);
                     repayProcess = true;
                     break;
                 case "repay_Leave":
-                    Monitor.Log("Option Leave", LogLevel.Info);
+                    Monitor.Log("Option Leave", LogLevel.Debug);
                     break;
             }
         }
@@ -184,15 +189,15 @@ namespace LoanMod
             switch (option)
             {
                 case "menu_Yes":
-                    Monitor.Log("Option Yes", LogLevel.Info);
+                    Monitor.Log("Option Yes", LogLevel.Debug);
                     InitiateRepayment(true);
                     break;
                 case "menu_No":
-                    Monitor.Log("Option No", LogLevel.Info);
+                    Monitor.Log("Option No", LogLevel.Debug);
                     repayProcess = false;
                     break;
                 case "menu_Leave":
-                    Monitor.Log("Option Leave", LogLevel.Info);
+                    Monitor.Log("Option Leave", LogLevel.Debug);
                     repayProcess = false;
                     break;
             }
