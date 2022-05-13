@@ -1,6 +1,8 @@
 ﻿using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.Menus;
+using System;
 using System.Collections.Generic;
 
 namespace LoanMod
@@ -13,6 +15,7 @@ namespace LoanMod
         private int amount, duration;
         private float interest;
         private LoanManager loanManager;
+        private int DailyAmountBeforeCustomPayment;
         private readonly List<LoanMPMessage> mpMessage = new();
 
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e) => AddModFunctions();
@@ -68,7 +71,7 @@ namespace LoanMod
             if (Helper.Input.IsDown(Config.LoanButton))
             {
                 StartBorrow(1, "Key_Amount");
-                Monitor.Log($"{Game1.player.Name} pressed {e.Button} to open Loan Menu.", LogLevel.Info);
+                Monitor.Log($"{Game1.player.Name} pressed {e.Button} to open Loan Menu.", LogLevel.Debug);
             }
         }
 
@@ -113,12 +116,37 @@ namespace LoanMod
                 mobileApi.SetAppRunning(false);
         }
 
-        private void InitiateRepayment(bool full)
+        private void InitiateRepayment(bool full, bool custom = false)
         {
             if (loanManager.IsBorrowing && loanManager.Balance > 0 )
             {
                 //check if player wants to repay in full.
-                if (full)
+                if (custom)
+                {
+                    Game1.activeClickableMenu = new NumberSelectionMenu(I18n.Msg_Startrepay(), (val, cost, farmer) =>
+                    {
+                        //if user chooses to repay full amount from custom menu
+                        if (val == loanManager.Balance)
+                        {
+                            StartBorrow(3, "Key_Repay");
+                            return;
+                        }
+
+                        if (Game1.player.Money >= val)
+                        {
+                            Game1.player.Money -= val;
+                            loanManager.AmountRepaid += val;
+                            loanManager.Balance -= val;
+                            //recalculate daily amount in case balance is lower than daily repayment
+                            if (DailyAmountBeforeCustomPayment == 0)
+                                DailyAmountBeforeCustomPayment = loanManager.DailyAmount;
+                            loanManager.DailyAmount = Math.Max(loanManager.DailyAmount - val, 0);
+                            AddMessage(I18n.Msg_Payment_Complete(val), HUDMessage.achievement_type);
+                        }
+                        Game1.activeClickableMenu = null;
+                    }, -1, 1, loanManager.Balance, Math.Min(loanManager.DailyAmount, loanManager.Balance));
+                }
+                else if (full)
                 {
                     if (Game1.player.Money >= loanManager.Balance)
                     {   //Repays the remaining balance
@@ -132,10 +160,8 @@ namespace LoanMod
                     }
                     repayProcess = false;
                     return;
-                }
-
-                //Check if you are still in loan contract
-                if (loanManager.Balance > 0)
+                } //Check if you are still in loan contract
+                else if (loanManager.Balance > 0)
                 {
                     //If player has enough Money for the daily deduction amount
                     if (Game1.player.Money >= loanManager.DailyAmount)
@@ -209,7 +235,13 @@ namespace LoanMod
             {
                 if (loanManager.HasPaid)
                 {
-                    AddMessage(I18n.Msg_Payment_Complete(loanManager.DailyAmount), HUDMessage.achievement_type);
+                    if (loanManager.DailyAmount > 0) 
+                        AddMessage(I18n.Msg_Payment_Complete(loanManager.DailyAmount), HUDMessage.achievement_type);
+                    if (DailyAmountBeforeCustomPayment > 0)
+                    {
+                        loanManager.DailyAmount = DailyAmountBeforeCustomPayment;
+                        DailyAmountBeforeCustomPayment = 0;
+                    }
                     loanManager.HasPaid = false;
                 }
                 if (loanManager.Balance < loanManager.DailyAmount) { loanManager.DailyAmount = loanManager.Balance; }
