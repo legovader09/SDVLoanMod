@@ -16,8 +16,8 @@ Loan Mod is a mod that lets you loan money for a period of time, with daily repa
 
 ### Config File
 Here is a list of config options and their purpose:
-| Key   | Default Value | Purpose |
-| :- | :-: | :- |
+| Key | Default Value | Purpose |
+| :- | :--: | - |
 | LoanButton | L | This is the keyboard key to press to open the menu. |
 | CustomMoneyInput | true | If true, the player is presented with a number input dialog, if false `MoneyAmount1-4` will be used instead, shown in a multiple choice dialog. |
 | MaxBorrowAmount | 1000000 | The maximum amount of money that can be entered in the borrow dialog. This number should not exceed `99,999,999` as the game will throw an error. |
@@ -26,6 +26,7 @@ Here is a list of config options and their purpose:
 | DayLength1-4 | 3, 7, 14, 28 | Sets the duration options of the loan. These values can be anything, but at minimum must be `1`. |
 | MoneyAmount1-4 | 500, 1000, 5000, 10000 | Sets multiple choice option for amount of money to borrow. **Note:** these values are only relevant if `CustomMoneyInput` is set to `false`, this setting is obsolete, and should not be used unless preferred over a number input dialog. |
 | Reset | false | Should the mod be bugged in any way with your save file, set this to `true`, then load the save again, and the mod should create a new Loan Profile. |
+
 Note: By default, the shorter the loan is the higher the interest rate will be, however some people prefer this the other way around. If this is the case for you, I'd recommend changing the interest rate values accordingly. The interest value corresponds to the DayLength setting, so *DayLength1* matches with *InterestModifier1*, and so on.
 
 ### Languages Translated
