@@ -234,8 +234,11 @@ namespace LoanMod
         {
             if (!Context.IsMainPlayer)
             {
-                var m = new LoanMPMessage { Peer = Game1.player.UniqueMultiplayerID };
-                m.LoanManager = loanManager;
+                var m = new LoanMPMessage
+                {
+                    Peer = Game1.player.UniqueMultiplayerID,
+                    LoanManager = loanManager
+                };
                 Helper.Multiplayer.SendMessage(m, "SendLoanFileToSave");
             }
             canSave = true;
