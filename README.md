@@ -7,7 +7,7 @@ Loan Mod is a mod that lets you loan money for a period of time, with daily repa
 
 ### Installation
 -   [Install the latest version of SMAPI](https://smapi.io/).
--   Install Animals Need Water [from Nexus Mods](https://www.nexusmods.com/stardewvalley/mods/3882).
+-   Install Loan Mod [from Nexus Mods](https://www.nexusmods.com/stardewvalley/mods/3882).
 -   Run the game using `SMAPI`.
 
 ### Using the Mod
