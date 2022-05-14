@@ -30,12 +30,12 @@ Here is a list of config options and their purpose:
 Note: By default, the shorter the loan is the higher the interest rate will be, however some people prefer this the other way around. If this is the case for you, I'd recommend changing the interest rate values accordingly. The interest value corresponds to the DayLength setting, so *DayLength1* matches with *InterestModifier1*, and so on.
 
 ### Languages Translated
-| Language   | Credit                  |
-| :--------- | :------------           |
-| Korean     | Credit to [jooarose](https://www.nexusmods.com/users/56707037)    |
-| Thai       | Credit to [warmblanket](https://github.com/ellipszist/StardewMods)  |
-| Chinese    | Credit to [Puffeeydii](https://www.nexusmods.com/stardewvalley/users/122749553)   |
-| German    | Credit to [legovader09](https://github.com/legovader09)   |
+| Language   | Credit                  | Link |
+| :--------- | :------------           | :--- |
+| Korean     | Credit to [jooarose](https://www.nexusmods.com/users/56707037)    | [X](../translations/ko/LoanMod/i18n/ko.json) |
+| Thai       | Credit to [warmblanket](https://github.com/ellipszist/StardewMods)  | [X](../translations/th/LoanMod/i18n/th.json) |
+| Chinese    | Credit to [Puffeeydii](https://www.nexusmods.com/stardewvalley/users/122749553)   | [X](../translations/zh/LoanMod/i18n/zh.json) |
+| German    | Credit to [legovader09](https://github.com/legovader09)   | [X](../translations/de/LoanMod/i18n/de.json) |
 
 **Contributing**
 - If you would like to contribute with language translations, please follow the steps below:
