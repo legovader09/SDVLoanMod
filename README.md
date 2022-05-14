@@ -7,7 +7,7 @@ Loan Mod is a mod that lets you loan money for a period of time, with daily repa
 
 ### Installation
 -   [Install the latest version of SMAPI](https://smapi.io/).
--   Install Animals Need Water [from Nexus Mods](https://www.nexusmods.com/stardewvalley/mods/3882).
+-   Install Loan Mod [from Nexus Mods](https://www.nexusmods.com/stardewvalley/mods/3882).
 -   Run the game using `SMAPI`.
 
 ### Using the Mod
@@ -30,19 +30,20 @@ Here is a list of config options and their purpose:
 Note: By default, the shorter the loan is the higher the interest rate will be, however some people prefer this the other way around. If this is the case for you, I'd recommend changing the interest rate values accordingly. The interest value corresponds to the DayLength setting, so *DayLength1* matches with *InterestModifier1*, and so on.
 
 ### Languages Translated
-| Language   | Credit                  |
-| :--------- | :------------           |
-| Korean     | Credit to [jooarose](https://www.nexusmods.com/users/56707037)    |
-| Thai       | Credit to [warmblanket](https://github.com/ellipszist/StardewMods)  |
-| Chinese    | Credit to [Puffeeydii](https://www.nexusmods.com/stardewvalley/users/122749553)   |
+| Language   | Credit                  | Link |
+| :--------- | :------------           | :--- |
+| Korean     | Credit to [jooarose](https://www.nexusmods.com/users/56707037)    | [X](../translations/ko/LoanMod/i18n/ko.json) |
+| Thai       | Credit to [warmblanket](https://github.com/ellipszist/StardewMods)  | [X](../translations/th/LoanMod/i18n/th.json) |
+| Chinese    | Credit to [Puffeeydii](https://www.nexusmods.com/stardewvalley/users/122749553)   | [X](../translations/zh/LoanMod/i18n/zh.json) |
+| German    | Credit to [legovader09](https://github.com/legovader09)   | [X](../translations/de/LoanMod/i18n/de.json) |
 
 **Contributing**
 - If you would like to contribute with language translations, please follow the steps below:
 1. Clone the repo, or use this website and edit directly.
-2. Create a new branch, ideally called `translations/{language code}` (e.g. translations/th for Thai), or if switch to the branch if it already exists and you would like to make improvements.
+2. Create a new branch, ideally called `translations/{language code}` (e.g. translations/th for Thai), or switch to the branch if it already exists and you would like to make improvements.
 3. If creating a new branch, duplicate the [default.json](LoanMod/i18n/default.json) file, rename this to [your language code](https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Translation#File_structure)`.json` (e.g. de.json for German)
-4. If switching to an existing branch, please double check that it is up to date with the origin.
+4. If switching to an existing branch, please double check that it is up to date with the origin. This is irrelevant if you are editing the file directly on GitHub.
 5. Make the relevant translations, please ensure to leave {{tokens}} untouched, they can be moved around but must not be changed.
 6. Push the branch and then create a pull request into the `dev`  branch for approval.
-- If you don't like using git, feel free to [email](mailto:dcdominoes@gmail.com) me with the translation file!
+- If you don't like using git, or GitHub, feel free to [email](mailto:dcdominoes@gmail.com) me with the translation file!
 - You will be credited and added to the table above, as a thanks for your contribution.
