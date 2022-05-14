@@ -169,7 +169,7 @@ namespace LoanMod
             {
                 case "repay_show_Balance":
                     Monitor.Log("Option show balance", LogLevel.Debug);
-                    AddMessage(I18n.Msg_Payment_Remaining(loanManager.Balance.ToString("N0"), loanManager.Duration, loanManager.CalculateAmountToPayToday.ToString("N0")), HUDMessage.newQuest_type);
+                    Game1.addHUDMessage(new HUDMessage(I18n.Msg_Payment_Remaining(loanManager.Balance.ToString("N0"), loanManager.Duration, loanManager.DailyAmount.ToString("N0")), HUDMessage.newQuest_type));
                     break;
                 case "repay_Custom":
                     Monitor.Log("Option repay custom", LogLevel.Debug);
