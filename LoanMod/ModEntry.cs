@@ -64,7 +64,7 @@ namespace LoanMod
             loanManager.Duration = duration;
             loanManager.Interest = interest;
             loanManager.Balance = (int)loanManager.CalculateBalance;
-            loanManager.DailyAmount = (int)loanManager.CalculateInitDailyAmount;
+            loanManager.DailyAmount = (int)loanManager.CalculateDailyAmount;
 
             Monitor.Log($"Amount: {option}, Duration: {duration}, Interest: {interest}.", LogLevel.Info);
 
@@ -107,7 +107,9 @@ namespace LoanMod
                             loanManager.AmountRepaid += val;
                             loanManager.Balance -= val;
                             //recalculate daily amount in case balance is lower than daily repayment
-                            loanManager.AmountRepaidToday += val;
+                            if (DailyAmountBeforeCustomPayment == 0)
+                                DailyAmountBeforeCustomPayment = loanManager.DailyAmount;
+                            loanManager.DailyAmount = Math.Max(loanManager.DailyAmount - val, 0);
                             AddMessage(I18n.Msg_Payment_Complete(val.ToString("N0")), HUDMessage.achievement_type);
                         }
                         Game1.activeClickableMenu = null;
@@ -130,16 +132,15 @@ namespace LoanMod
                 } //Check if you are still in loan contract
                 else if (loanManager.Balance > 0)
                 {
-                    int moneyToRepay = loanManager.CalculateAmountToPayToday;
                     //If player has enough Money for the daily deduction amount
-                    if (Game1.player.Money >= moneyToRepay)
+                    if (Game1.player.Money >= loanManager.DailyAmount)
                     {
                         //Checks if the balance is greater than or equal to the daily repayment amount
-                        if (loanManager.Balance > moneyToRepay)
+                        if (loanManager.Balance > loanManager.DailyAmount)
                         {
-                            Game1.player.Money -= moneyToRepay;
-                            loanManager.AmountRepaid += moneyToRepay;
-                            loanManager.Balance -= moneyToRepay;
+                            Game1.player.Money -= loanManager.DailyAmount;
+                            loanManager.AmountRepaid += loanManager.DailyAmount;
+                            loanManager.Balance -= loanManager.DailyAmount;
                         }
                         else
                         {
@@ -162,12 +163,12 @@ namespace LoanMod
                             AddMessage(I18n.Msg_Payment_Failed(loanManager.DailyAmount.ToString("N0")), HUDMessage.error_type);
                             if (loanManager.LateDays == 0)
                             {
-                                AddMessage(I18n.Msg_Payment_Missed1(loanManager.LateChargeAmount.ToString("N0")), HUDMessage.error_type);
+                                Game1.addHUDMessage(new HUDMessage(I18n.Msg_Payment_Missed1(loanManager.LateChargeAmount.ToString("N0")), HUDMessage.error_type));
                                 loanManager.LateDays++;
                             }
                             else
                             {
-                                AddMessage(I18n.Msg_Payment_Missed2(loanManager.LateChargeAmount.ToString("N0")), HUDMessage.error_type);
+                                Game1.addHUDMessage(new HUDMessage(I18n.Msg_Payment_Missed2(loanManager.LateChargeAmount.ToString("N0")), HUDMessage.error_type));
                                 loanManager.Balance += loanManager.LateChargeAmount;
                             }
                         }
@@ -190,7 +191,6 @@ namespace LoanMod
             {
                 loanManager = new LoanManager();
                 Config.Reset = false;
-                Helper.WriteConfig<ModConfig>(Config);
                 AddMessage(I18n.Msg_Create(), HUDMessage.achievement_type);
             }
         }
@@ -203,12 +203,15 @@ namespace LoanMod
                 if (loanManager.HasPaid)
                 {
                     if (loanManager.DailyAmount > 0) 
-                        AddMessage(I18n.Msg_Payment_Complete(loanManager.CalculateAmountToPayToday.ToString("N0")), HUDMessage.achievement_type);
-
-                    loanManager.AmountRepaidToday = 0;
+                        AddMessage(I18n.Msg_Payment_Complete(loanManager.DailyAmount.ToString("N0")), HUDMessage.achievement_type);
+                    if (DailyAmountBeforeCustomPayment > 0)
+                    {
+                        loanManager.DailyAmount = DailyAmountBeforeCustomPayment;
+                        DailyAmountBeforeCustomPayment = 0;
+                    }
                     loanManager.HasPaid = false;
                 }
-                if (loanManager.Balance < loanManager.DailyAmount) loanManager.DailyAmount = loanManager.Balance;
+                if (loanManager.Balance < loanManager.DailyAmount) { loanManager.DailyAmount = loanManager.Balance; }
             }
             else
             {
