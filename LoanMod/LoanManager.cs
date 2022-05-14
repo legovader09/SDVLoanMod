@@ -28,6 +28,10 @@ namespace LoanMod
             /// </summary>
             public int AmountRepaid { get; set; } = 0;
             /// <summary>
+            /// <param name="AmountRepaidToday">Shows the amount of money the player has paid today.</param>
+            /// </summary>
+            public int AmountRepaidToday { get; set; } = 0;
+            /// <summary>
             /// <param name="hasPaid">Indicates if the player has already made a payment on the current day.</param>
             /// </summary>
             public bool HasPaid { get; set; } = false;
@@ -67,9 +71,14 @@ namespace LoanMod
             }
 
             /// <summary>
-            /// <param name="CalculateDailyAmount">Calculates the daily amount based on the balance left to pay.</param>
+            /// <param name="CalculateAmountToPayToday">Calculates the amount of money the player has to pay at the end of the day.</param>
             /// </summary>
-            internal double CalculateDailyAmount
+            internal int CalculateAmountToPayToday => Math.Max(DailyAmount - AmountRepaidToday, 0);
+
+            /// <summary>
+            /// <param name="CalculateInitDailyAmount">Calculates the daily amount based on the balance left to pay.</param>
+            /// </summary>
+            internal double CalculateInitDailyAmount
             {
                 get
                 {
