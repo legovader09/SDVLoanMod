@@ -15,8 +15,6 @@ namespace LoanMod
         private int amount, duration;
         private float interest;
         private LoanManager loanManager;
-        private int DailyAmountBeforeCustomPayment;
-        private readonly List<LoanMPMessage> mpMessage = new();
 
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e) => AddModFunctions();
 
@@ -30,38 +28,9 @@ namespace LoanMod
             helper.Events.GameLoop.DayEnding += DayEnding;
             helper.Events.GameLoop.DayStarted += DayStarted;
             helper.Events.Display.MenuChanged += MenuChanged;
-            helper.Events.Multiplayer.PeerConnected += OnMultiplayerConnect;
-            helper.Events.Multiplayer.ModMessageReceived += OnModMessageReceived;
 
             Config = helper.ReadConfig<ModConfig>();
         }
-        private void OnModMessageReceived(object sender, ModMessageReceivedEventArgs e)
-        {
-            if (e.FromModID == ModManifest.UniqueID && e.Type == "LoanManagerData")
-            {
-                //sets the local loanmanager to the one received from the main player.
-                var m = e.ReadAs<LoanMPMessage>();
-                if (Game1.player.UniqueMultiplayerID == m.Peer)
-                    loanManager = m.LoanManager;
-            }
-
-            if (e.FromModID == ModManifest.UniqueID && e.Type == "SendLoanFileToSave" && Context.IsMainPlayer)
-            {
-                var m = e.ReadAs<LoanMPMessage>();
-                mpMessage.Add(m);
-            }
-        }
-
-        private void OnMultiplayerConnect(object sender, PeerConnectedEventArgs e)
-        {
-            if (!Context.IsMainPlayer)
-                return;
-
-            var m = new LoanMPMessage { Peer = e.Peer.PlayerID };
-            m.LoanManager = Helper.Data.ReadSaveData<LoanManager>($"LoanMod.{m.Peer}") ?? new LoanManager();
-            Helper.Multiplayer.SendMessage(m, "LoanManagerData");
-        }
-
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             // ignore if player hasn't loaded a save yet
@@ -216,9 +185,7 @@ namespace LoanMod
 
             //checks if player is currently taking any loans, if so it will load all the loan data.
             if (Game1.player.IsMainPlayer)
-            {
-                loanManager = this.Helper.Data.ReadSaveData<LoanManager>("Doomnik.MoneyManage");
-            }
+                loanManager = this.Helper.Data.ReadSaveData<LoanManager>("Doomnik.MoneyManage"); 
 
             if (loanManager == null || Config.Reset)
             {
@@ -262,19 +229,7 @@ namespace LoanMod
         /// <summary>
         /// This method prevents mods like SaveAnytime from interfering with repayments.
         /// </summary>
-        private void DayEnding(object sender, DayEndingEventArgs e)
-        {
-            if (!Context.IsMainPlayer)
-            {
-                var m = new LoanMPMessage
-                {
-                    Peer = Game1.player.UniqueMultiplayerID,
-                    LoanManager = loanManager
-                };
-                Helper.Multiplayer.SendMessage(m, "SendLoanFileToSave");
-            }
-            canSave = true;
-        }
+        private void DayEnding(object sender, DayEndingEventArgs e) => canSave = true;
 
         private void Saving(object sender, SavingEventArgs e)
         {
@@ -284,11 +239,6 @@ namespace LoanMod
                 if (Context.IsMainPlayer)
                 {
                     Helper.Data.WriteSaveData("Doomnik.MoneyManage", loanManager);
-                    foreach(var m in mpMessage)
-                    {
-                        Helper.Data.WriteSaveData($"LoanMod.{m.Peer}", m.LoanManager);
-                    }
-                    mpMessage.Clear();
                 }
 
                 canSave = false;
