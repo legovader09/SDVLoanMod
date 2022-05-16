@@ -3,7 +3,7 @@
   "menu.days": "วัน",
   "menu.leave": "ออก",
   "menu.no": "ไม่",
-  "menu.repaycustom": "Repay a Custom Amount",
+  "menu.repaycustom": "ชำระเงินคืนในจำนวนที่คุณกำหนดเอง",
   "menu.repayfull": "ชำระคืนเต็มจำนวน",
   "menu.showbalance": "แสดงยอดหนี้คงเหลือ",
   "menu.yes": "ใช่",
@@ -21,5 +21,5 @@
   "msg.payment.remaining": "ยอดหนี้คงเหลือของคุณคือ {{Balance}}g โดยเหลือเวลาอีก {{Duration}} วัน และจะต้องชำระ {{DailyAmount}}g ต่อวัน",
   "msg.startborrow-1": "คุณต้องการกู้เงินเป็นจำนวนเท่าใด?",
   "msg.startborrow-2": "คุณต้องการกู้เป็นระยะเวลานานเพียงใด?",
-  "msg.startrepay": "How much money would you like to repay?"
+  "msg.startrepay": "คุณต้องการชำระเงินคืนเป็นจำนวนเท่าใด?"
 }
