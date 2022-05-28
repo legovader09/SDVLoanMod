@@ -40,7 +40,7 @@ Note: By default, the shorter the loan is the higher the interest rate will be, 
 
 **Contributing**
 - If you would like to contribute with language translations, please follow the steps below:
-1. Clone the repo, or use this website and edit directly.
+1. Fork this repository.
 2. Create a new branch, ideally called `translations/{language code}` (e.g. translations/th for Thai), or switch to the branch if it already exists and you would like to make improvements.
 3. If creating a new branch, duplicate the [default.json](LoanMod/i18n/default.json) file, rename this to [your language code](https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Translation#File_structure)`.json` (e.g. de.json for German)
 4. If switching to an existing branch, please double check that it is up to date with the origin. This is irrelevant if you are editing the file directly on GitHub.
