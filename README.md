@@ -38,7 +38,7 @@ Note: By default, the shorter the loan is the higher the interest rate will be, 
 | German    | Credit to [legovader09](https://github.com/legovader09)   | [X](../translations/de/LoanMod/i18n/de.json) |
 | Russian    | Credit to [Sharaj](https://steamcommunity.com/id/Sharaj/myworkshopfiles)   | [X](../translations/ru/LoanMod/i18n/ru.json) |
 
-**Contributing**
+### Contributing
 - If you would like to contribute with language translations, please follow the steps below:
 1. Fork this repository.
 2. Create a new branch, ideally called `translations/{language code}` (e.g. translations/th for Thai), or switch to the branch if it already exists and you would like to make improvements.
