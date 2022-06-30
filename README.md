@@ -32,7 +32,7 @@ Note: By default, the shorter the loan is the higher the interest rate will be, 
 ### Languages Translated
 | Language   | Credit                  | Link |
 | :--------- | :------------           | :--- |
-| Korean     | Credits to [jooarose](https://www.nexusmods.com/users/56707037), [SPN0301](https://github.com/SNP0301)   | [X](LoanMod/i18n/ko.json) |
+| Korean     | Credits to [jooarose](https://www.nexusmods.com/users/56707037), [SNP0301](https://github.com/SNP0301)   | [X](LoanMod/i18n/ko.json) |
 | Thai       | Credit to [warmblanket](https://github.com/ellipszist/StardewMods)  | [X](LoanMod/i18n/th.json) |
 | Chinese    | Credit to [Puffeeydii](https://www.nexusmods.com/stardewvalley/users/122749553)   | [X](LoanMod/i18n/zh.json) |
 | German    | Credit to [legovader09](https://github.com/legovader09)   | [X](LoanMod/i18n/de.json) |
