@@ -15,14 +15,14 @@ namespace LoanMod
         private IMobilePhoneApi mobileApi;
         private void AddModFunctions()
         {
-            var configMenu = this.Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+            var configMenu = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
             if (configMenu != null)
             {
                 // register mod
                 configMenu.Register(
-                    mod: this.ModManifest,
-                    reset: () => this.Config = new ModConfig(),
-                    save: () => this.Helper.WriteConfig(this.Config)
+                    mod: ModManifest,
+                    reset: () => Config = new ModConfig(),
+                    save: () => Helper.WriteConfig(Config)
                 );
 
                 MainSection(configMenu);
@@ -32,11 +32,12 @@ namespace LoanMod
                 AdvancedSelection(configMenu);
             }
 
-            mobileApi = this.Helper.ModRegistry.GetApi<IMobilePhoneApi>("aedenthorn.MobilePhone");
-            if (mobileApi != null)
+            mobileApi = Helper.ModRegistry.GetApi<IMobilePhoneApi>("aedenthorn.MobilePhone");
+
+            if (mobileApi != null && Config.AddDefaultMobileApp)
             {
                 Texture2D appIcon = Helper.ModContent.Load<Texture2D>(Path.Combine("assets", "app_icon.png"));
-                bool success = mobileApi.AddApp(Helper.ModRegistry.ModID, "Loans", () => StartBorrow(1, "Key_Amount"), appIcon);
+                bool success = mobileApi.AddApp(Helper.ModRegistry.ModID, Helper.Translation.Get("app.name"), () => StartBorrow(1, "Key_Amount"), appIcon);
                 Monitor.Log($"loaded phone app successfully: {success}", LogLevel.Debug);
             }
         }
@@ -44,108 +45,115 @@ namespace LoanMod
         private void AdvancedSelection(IGenericModConfigMenuApi configMenu)
         {
             configMenu.AddSectionTitle(
-                mod: this.ModManifest,
+                mod: ModManifest,
                 text: () => "Advanced Options"
             );
 
             configMenu.AddParagraph(
-                mod: this.ModManifest,
+                mod: ModManifest,
                 text: () => "Only modify these values if you absolutely have to."
             );
 
             configMenu.AddBoolOption(
-                mod: this.ModManifest,
+                mod: ModManifest,
                 name: () => "Use Input Box vs Dialog Boxes",
                 tooltip: () => "Uses input box to enter a custom amount of money to borrow.",
-                getValue: () => this.Config.CustomMoneyInput,
-                setValue: value => this.Config.CustomMoneyInput = value
+                getValue: () => Config.CustomMoneyInput,
+                setValue: value => Config.CustomMoneyInput = value
             );
 
             configMenu.AddBoolOption(
-                mod: this.ModManifest,
+                mod: ModManifest,
                 name: () => "Reset Loan Profile",
                 tooltip: () => "Resets the loan profile on the next save file you load.",
-                getValue: () => this.Config.Reset,
-                setValue: value => this.Config.Reset = value
+                getValue: () => Config.Reset,
+                setValue: value => Config.Reset = value
             );
         }
 
         private void MainSection(IGenericModConfigMenuApi configMenu)
         {
             configMenu.AddSectionTitle(
-                mod: this.ModManifest,
+                mod: ModManifest,
                 text: () => "Main Options"
             );
 
             configMenu.AddKeybind(
-                mod: this.ModManifest,
-                getValue: () => this.Config.LoanButton,
-                setValue: value => this.Config.LoanButton = value,
+                mod: ModManifest,
+                getValue: () => Config.LoanButton,
+                setValue: value => Config.LoanButton = value,
                 name: () => "Change Keybind",
                 tooltip: () => "Change the button to press to open the loan menu."
             );
 
             configMenu.AddNumberOption(
-                mod: this.ModManifest,
-                getValue: () => this.Config.LatePaymentChargeRate,
-                setValue: value => this.Config.LatePaymentChargeRate = (float)value,
+                mod: ModManifest,
+                getValue: () => Config.LatePaymentChargeRate,
+                setValue: value => Config.LatePaymentChargeRate = (float)value,
                 name: () => "Late Payment Interest Rate",
                 min: 0f,
                 interval: 100f
             );
 
             configMenu.AddNumberOption(
-                mod: this.ModManifest,
-                getValue: () => this.Config.MaxBorrowAmount,
-                setValue: value => this.Config.MaxBorrowAmount = (int)value,
+                mod: ModManifest,
+                getValue: () => Config.MaxBorrowAmount,
+                setValue: value => Config.MaxBorrowAmount = (int)value,
                 name: () => "Maximum Borrow Amount",
                 min: 100f,
                 interval: 100f
+            );
+
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                getValue: () => Config.AddDefaultMobileApp,
+                setValue: value => Config.AddDefaultMobileApp = value,
+                name: () => "Add Default Mobile App"
             );
         }
         private void LegacyMoneySection(IGenericModConfigMenuApi configMenu)
         {
             configMenu.AddSectionTitle(
-                   mod: this.ModManifest,
+                   mod: ModManifest,
                    text: () => "Money Amount Dialog"
                );
 
             configMenu.AddParagraph(
-                mod: this.ModManifest,
+                mod: ModManifest,
                 text: () => "Only modify these values if you DO NOT have \"Use Input Box\" checked."
             );
 
             configMenu.AddNumberOption(
-                mod: this.ModManifest,
-                getValue: () => this.Config.MoneyAmount1,
-                setValue: value => this.Config.MoneyAmount1 = (int)value,
+                mod: ModManifest,
+                getValue: () => Config.MoneyAmount1,
+                setValue: value => Config.MoneyAmount1 = (int)value,
                 name: () => "Money Amount 1",
                 min: 0f,
                 interval: 100f
             );
 
             configMenu.AddNumberOption(
-                mod: this.ModManifest,
-                getValue: () => this.Config.MoneyAmount2,
-                setValue: value => this.Config.MoneyAmount2 = (int)value,
+                mod: ModManifest,
+                getValue: () => Config.MoneyAmount2,
+                setValue: value => Config.MoneyAmount2 = (int)value,
                 name: () => "Money Amount 2",
                 min: 0f,
                 interval: 100f
             );
 
             configMenu.AddNumberOption(
-                mod: this.ModManifest,
-                getValue: () => this.Config.MoneyAmount3,
-                setValue: value => this.Config.MoneyAmount3 = (int)value,
+                mod: ModManifest,
+                getValue: () => Config.MoneyAmount3,
+                setValue: value => Config.MoneyAmount3 = (int)value,
                 name: () => "Money Amount 3",
                 min: 0f,
                 interval: 100f
             );
 
             configMenu.AddNumberOption(
-                mod: this.ModManifest,
-                getValue: () => this.Config.MoneyAmount4,
-                setValue: value => this.Config.MoneyAmount4 = (int)value,
+                mod: ModManifest,
+                getValue: () => Config.MoneyAmount4,
+                setValue: value => Config.MoneyAmount4 = (int)value,
                 name: () => "Money Amount 4",
                 min: 0f,
                 interval: 100f
@@ -154,80 +162,80 @@ namespace LoanMod
         private void DurationSection(IGenericModConfigMenuApi configMenu)
         {
             configMenu.AddSectionTitle(
-                      mod: this.ModManifest,
+                      mod: ModManifest,
                       text: () => "Loan Duration Menu Options"
                   );
 
             configMenu.AddParagraph(
-                mod: this.ModManifest,
+                mod: ModManifest,
                 text: () => "Value in days that define the duration of the loan."
             );
 
             configMenu.AddNumberOption(
-                mod: this.ModManifest,
-                getValue: () => this.Config.DayLength1,
-                setValue: value => this.Config.DayLength1 = (int)value,
+                mod: ModManifest,
+                getValue: () => Config.DayLength1,
+                setValue: value => Config.DayLength1 = (int)value,
                 name: () => "Duration Option 1"
             );
 
             configMenu.AddNumberOption(
-                mod: this.ModManifest,
-                getValue: () => this.Config.DayLength2,
-                setValue: value => this.Config.DayLength2 = (int)value,
+                mod: ModManifest,
+                getValue: () => Config.DayLength2,
+                setValue: value => Config.DayLength2 = (int)value,
                 name: () => "Duration Option 2"
             );
 
             configMenu.AddNumberOption(
-                mod: this.ModManifest,
-                getValue: () => this.Config.DayLength3,
-                setValue: value => this.Config.DayLength3 = (int)value,
+                mod: ModManifest,
+                getValue: () => Config.DayLength3,
+                setValue: value => Config.DayLength3 = (int)value,
                 name: () => "Duration Option 3"
             );
 
             configMenu.AddNumberOption(
-                mod: this.ModManifest,
-                getValue: () => this.Config.DayLength4,
-                setValue: value => this.Config.DayLength4 = (int)value,
+                mod: ModManifest,
+                getValue: () => Config.DayLength4,
+                setValue: value => Config.DayLength4 = (int)value,
                 name: () => "Duration Option 4"
             );
         }
         private void InterestSection(IGenericModConfigMenuApi configMenu)
         {
             configMenu.AddSectionTitle(
-                      mod: this.ModManifest,
+                      mod: ModManifest,
                       text: () => "Interest Menu Options"
                   );
 
             configMenu.AddParagraph(
-                mod: this.ModManifest,
+                mod: ModManifest,
                 text: () => "Each value corresponds to the Loan Duration menu above."
             );
 
             configMenu.AddNumberOption(
-                mod: this.ModManifest,
-                getValue: () => this.Config.InterestModifier1,
-                setValue: value => this.Config.InterestModifier1 = (float)value,
+                mod: ModManifest,
+                getValue: () => Config.InterestModifier1,
+                setValue: value => Config.InterestModifier1 = (float)value,
                 name: () => "Interest Modifier 1"
             );
 
             configMenu.AddNumberOption(
-                mod: this.ModManifest,
-                getValue: () => this.Config.InterestModifier2,
-                setValue: value => this.Config.InterestModifier2 = (float)value,
+                mod: ModManifest,
+                getValue: () => Config.InterestModifier2,
+                setValue: value => Config.InterestModifier2 = (float)value,
                 name: () => "Interest Modifier 2"
             );
 
             configMenu.AddNumberOption(
-                mod: this.ModManifest,
-                getValue: () => this.Config.InterestModifier3,
-                setValue: value => this.Config.InterestModifier3 = (float)value,
+                mod: ModManifest,
+                getValue: () => Config.InterestModifier3,
+                setValue: value => Config.InterestModifier3 = (float)value,
                 name: () => "Interest Modifier 3"
             );
 
             configMenu.AddNumberOption(
-                mod: this.ModManifest,
-                getValue: () => this.Config.InterestModifier4,
-                setValue: value => this.Config.InterestModifier4 = (float)value,
+                mod: ModManifest,
+                getValue: () => Config.InterestModifier4,
+                setValue: value => Config.InterestModifier4 = (float)value,
                 name: () => "Interest Modifier 4"
             );
         }

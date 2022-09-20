@@ -184,7 +184,7 @@ namespace LoanMod
 
             //checks if player is currently taking any loans, if so it will load all the loan data.
             if (Game1.player.IsMainPlayer)
-                loanManager = this.Helper.Data.ReadSaveData<LoanManager>("Doomnik.MoneyManage"); 
+                loanManager = Helper.Data.ReadSaveData<LoanManager>("Doomnik.MoneyManage"); 
 
             if (loanManager == null || Config.Reset)
             {
