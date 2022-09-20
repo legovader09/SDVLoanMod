@@ -3,7 +3,7 @@
 namespace LoanMod
 {
     public partial class ModEntry
-    { 
+    {
         internal class ModConfig
         {
             private readonly int MAX_LOAN_INT = 99999999;

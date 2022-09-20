@@ -1,5 +1,4 @@
-﻿using StardewModdingAPI;
-using static LoanMod.ModEntry;
+﻿using static LoanMod.ModEntry;
 
 namespace LoanMod
 {
