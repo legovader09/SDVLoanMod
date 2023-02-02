@@ -30,7 +30,7 @@ namespace LoanMod
             public int DayLength3 { get; set; } = 14;
             public int DayLength4 { get; set; } = 28;
             public bool Reset { get; set; } = false;
-            public bool AddMobileApp { get; set; }
+            public bool AddMobileApp { get; set; } = true;
         }
     }
 }
