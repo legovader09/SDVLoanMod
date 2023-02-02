@@ -95,7 +95,7 @@ namespace LoanMod
                 case "Key_Amount":
                     amount = val;
                     borrowProcess = true;
-                    this.Monitor.Log($"Selected {amount}g", LogLevel.Info);
+                    Monitor.Log($"Selected {amount}g", LogLevel.Info);
                     Game1.activeClickableMenu = null;
                     StartBorrow(2, "Key_Duration");
                     break;
@@ -109,26 +109,26 @@ namespace LoanMod
                 case "money_500":
                     amount = Config.MoneyAmount1;
                     borrowProcess = true;
-                    this.Monitor.Log("Selected 500g.", LogLevel.Info);
+                    Monitor.Log("Selected 500g.", LogLevel.Info);
                     break;
                 case "money_1k":
                     amount = Config.MoneyAmount2;
                     borrowProcess = true;
-                    this.Monitor.Log("Selected 1,000g.", LogLevel.Info);
+                    Monitor.Log("Selected 1,000g.", LogLevel.Info);
                     break;
                 case "money_5k":
                     amount = Config.MoneyAmount3;
                     borrowProcess = true;
-                    this.Monitor.Log("Selected 5,000g.", LogLevel.Info);
+                    Monitor.Log("Selected 5,000g.", LogLevel.Info);
                     break;
                 case "money_10k":
                     amount = Config.MoneyAmount4;
                     borrowProcess = true;
-                    this.Monitor.Log("Selected 10,000g.", LogLevel.Info);
+                    Monitor.Log("Selected 10,000g.", LogLevel.Info);
                     break;
                 case "money_Cancel":
                     borrowProcess = false;
-                    this.Monitor.Log("Option Cancel");
+                    Monitor.Log("Option Cancel");
                     break;
             }
         }
@@ -140,22 +140,22 @@ namespace LoanMod
                 case "time_3D":
                     duration = Config.DayLength1;
                     interest = Config.InterestModifier1;
-                    this.Monitor.Log($"Selected {Config.DayLength1} days.");
+                    Monitor.Log($"Selected {Config.DayLength1} days.");
                     break;
                 case "time_7D":
                     duration = Config.DayLength2;
                     interest = Config.InterestModifier2;
-                    this.Monitor.Log($"Selected {Config.DayLength2} days.");
+                    Monitor.Log($"Selected {Config.DayLength2} days.");
                     break;
                 case "time_14D":
                     duration = Config.DayLength3;
                     interest = Config.InterestModifier3;
-                    this.Monitor.Log($"Selected {Config.DayLength3} days.");
+                    Monitor.Log($"Selected {Config.DayLength3} days.");
                     break;
                 case "time_28D":
                     duration = Config.DayLength4;
                     interest = Config.InterestModifier4;
-                    this.Monitor.Log($"Selected {Config.DayLength4} days.");
+                    Monitor.Log($"Selected {Config.DayLength4} days.");
                     break;
                 case "time_Cancel":
                     borrowProcess = false;

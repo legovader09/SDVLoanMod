@@ -26,6 +26,7 @@ Here is a list of config options and their purpose:
 | DayLength1-4 | 3, 7, 14, 28 | Sets the duration options of the loan. These values can be anything, but at minimum must be `1`. |
 | MoneyAmount1-4 | 500, 1000, 5000, 10000 | Sets multiple choice option for amount of money to borrow. **Note:** these values are only relevant if `CustomMoneyInput` is set to `false`, this setting is obsolete, and should not be used unless preferred over a number input dialog. |
 | Reset | false | Should the mod be bugged in any way with your save file, set this to `true`, then load the save again, and the mod should create a new Loan Profile. |
+| AddDefaultMobileApp | true | Will this mod adds default mobile app (if [Mobile Phone](https://www.nexusmods.com/stardewvalley/mods/6523) is installed.) |
 
 Note: By default, the shorter the loan is the higher the interest rate will be, however some people prefer this the other way around. If this is the case for you, I'd recommend changing the interest rate values accordingly. The interest value corresponds to the DayLength setting, so *DayLength1* matches with *InterestModifier1*, and so on.
 

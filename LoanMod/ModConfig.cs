@@ -3,7 +3,7 @@
 namespace LoanMod
 {
     public partial class ModEntry
-    { 
+    {
         internal class ModConfig
         {
             private readonly int MAX_LOAN_INT = 99999999;
@@ -30,6 +30,7 @@ namespace LoanMod
             public int DayLength3 { get; set; } = 14;
             public int DayLength4 { get; set; } = 28;
             public bool Reset { get; set; } = false;
+            public bool AddDefaultMobileApp { get; internal set; }
         }
     }
 }

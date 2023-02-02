@@ -3,7 +3,6 @@ using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
 using System;
-using System.Collections.Generic;
 
 namespace LoanMod
 {
@@ -87,7 +86,7 @@ namespace LoanMod
 
         private void InitiateRepayment(bool full, bool custom = false)
         {
-            if (loanManager.IsBorrowing && loanManager.Balance > 0 )
+            if (loanManager.IsBorrowing && loanManager.Balance > 0)
             {
                 //check if player wants to repay in full.
                 if (custom)
@@ -184,7 +183,7 @@ namespace LoanMod
 
             //checks if player is currently taking any loans, if so it will load all the loan data.
             if (Game1.player.IsMainPlayer)
-                loanManager = this.Helper.Data.ReadSaveData<LoanManager>("Doomnik.MoneyManage"); 
+                loanManager = Helper.Data.ReadSaveData<LoanManager>("Doomnik.MoneyManage");
 
             if (loanManager == null || Config.Reset)
             {
@@ -202,7 +201,7 @@ namespace LoanMod
             {
                 if (loanManager.HasPaid)
                 {
-                    if (loanManager.DailyAmount > 0) 
+                    if (loanManager.DailyAmount > 0)
                         AddMessage(I18n.Msg_Payment_Complete(loanManager.CalculateAmountToPayToday.ToString("N0")), HUDMessage.achievement_type);
 
                     loanManager.AmountRepaidToday = 0;

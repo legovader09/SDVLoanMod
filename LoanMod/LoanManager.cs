@@ -1,5 +1,4 @@
-﻿using StardewValley;
-using System;
+﻿using System;
 
 namespace LoanMod
 {
