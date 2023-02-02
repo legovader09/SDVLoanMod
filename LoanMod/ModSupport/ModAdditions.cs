@@ -29,12 +29,11 @@ namespace LoanMod
 
             mobileApi = Helper.ModRegistry.GetApi<IMobilePhoneApi>("aedenthorn.MobilePhone");
 
-            if (mobileApi != null && Config.AddDefaultMobileApp)
-            {
-                Texture2D appIcon = Helper.ModContent.Load<Texture2D>(Path.Combine("assets", "app_icon.png"));
-                bool success = mobileApi.AddApp(Helper.ModRegistry.ModID, Helper.Translation.Get("app.name"), () => StartBorrow(1, "Key_Amount"), appIcon);
-                Monitor.Log($"loaded phone app successfully: {success}", LogLevel.Debug);
-            }
+            if (mobileApi == null || !Config.AddMobileApp) return;
+
+            var appIcon = Helper.ModContent.Load<Texture2D>(Path.Combine("assets", "app_icon.png"));
+            var success = mobileApi.AddApp(Helper.ModRegistry.ModID, I18n.App_Name(), () => StartBorrow(1, "Key_Amount"), appIcon);
+            Monitor.Log($"loaded phone app successfully: {success}", LogLevel.Debug);
         }
 
         private void AdvancedSelection(IGenericModConfigMenuApi configMenu)
@@ -84,7 +83,7 @@ namespace LoanMod
             configMenu.AddNumberOption(
                 mod: ModManifest,
                 getValue: () => Config.LatePaymentChargeRate,
-                setValue: value => Config.LatePaymentChargeRate = (float)value,
+                setValue: value => Config.LatePaymentChargeRate = value,
                 name: () => "Late Payment Interest Rate",
                 min: 0f,
                 interval: 100f
@@ -101,9 +100,9 @@ namespace LoanMod
 
             configMenu.AddBoolOption(
                 mod: ModManifest,
-                getValue: () => Config.AddDefaultMobileApp,
-                setValue: value => Config.AddDefaultMobileApp = value,
-                name: () => "Add Default Mobile App"
+                getValue: () => Config.AddMobileApp,
+                setValue: value => Config.AddMobileApp = value,
+                name: () => "Add Mobile App"
             );
         }
         private void LegacyMoneySection(IGenericModConfigMenuApi configMenu)
@@ -115,7 +114,7 @@ namespace LoanMod
 
             configMenu.AddParagraph(
                 mod: ModManifest,
-                text: () => "Only modify these values if you DO NOT have \"Use Input Box\" checked."
+                text: () => "Only modify these values if you DO NOT have \"Use Input Box\" checked in the advanced section."
             );
 
             configMenu.AddNumberOption(
@@ -169,28 +168,28 @@ namespace LoanMod
             configMenu.AddNumberOption(
                 mod: ModManifest,
                 getValue: () => Config.DayLength1,
-                setValue: value => Config.DayLength1 = (int)value,
+                setValue: value => Config.DayLength1 = value,
                 name: () => "Duration Option 1"
             );
 
             configMenu.AddNumberOption(
                 mod: ModManifest,
                 getValue: () => Config.DayLength2,
-                setValue: value => Config.DayLength2 = (int)value,
+                setValue: value => Config.DayLength2 = value,
                 name: () => "Duration Option 2"
             );
 
             configMenu.AddNumberOption(
                 mod: ModManifest,
                 getValue: () => Config.DayLength3,
-                setValue: value => Config.DayLength3 = (int)value,
+                setValue: value => Config.DayLength3 = value,
                 name: () => "Duration Option 3"
             );
 
             configMenu.AddNumberOption(
                 mod: ModManifest,
                 getValue: () => Config.DayLength4,
-                setValue: value => Config.DayLength4 = (int)value,
+                setValue: value => Config.DayLength4 = value,
                 name: () => "Duration Option 4"
             );
         }
@@ -209,28 +208,28 @@ namespace LoanMod
             configMenu.AddNumberOption(
                 mod: ModManifest,
                 getValue: () => Config.InterestModifier1,
-                setValue: value => Config.InterestModifier1 = (float)value,
+                setValue: value => Config.InterestModifier1 = value,
                 name: () => "Interest Modifier 1"
             );
 
             configMenu.AddNumberOption(
                 mod: ModManifest,
                 getValue: () => Config.InterestModifier2,
-                setValue: value => Config.InterestModifier2 = (float)value,
+                setValue: value => Config.InterestModifier2 = value,
                 name: () => "Interest Modifier 2"
             );
 
             configMenu.AddNumberOption(
                 mod: ModManifest,
                 getValue: () => Config.InterestModifier3,
-                setValue: value => Config.InterestModifier3 = (float)value,
+                setValue: value => Config.InterestModifier3 = value,
                 name: () => "Interest Modifier 3"
             );
 
             configMenu.AddNumberOption(
                 mod: ModManifest,
                 getValue: () => Config.InterestModifier4,
-                setValue: value => Config.InterestModifier4 = (float)value,
+                setValue: value => Config.InterestModifier4 = value,
                 name: () => "Interest Modifier 4"
             );
         }

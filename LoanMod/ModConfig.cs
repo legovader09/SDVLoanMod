@@ -6,7 +6,7 @@ namespace LoanMod
     {
         internal class ModConfig
         {
-            private readonly int MAX_LOAN_INT = 99999999;
+            private const int MAX_LOAN_INT = 99999999;
             private int maxBorrowAmount = 1000000;
 
             public SButton LoanButton { get; set; } = SButton.L;
@@ -30,7 +30,7 @@ namespace LoanMod
             public int DayLength3 { get; set; } = 14;
             public int DayLength4 { get; set; } = 28;
             public bool Reset { get; set; } = false;
-            public bool AddDefaultMobileApp { get; internal set; }
+            public bool AddMobileApp { get; set; }
         }
     }
 }

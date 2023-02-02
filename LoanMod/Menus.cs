@@ -12,49 +12,41 @@ namespace LoanMod
         {
             menuItems = new List<Response>
             {
-                new Response("money_500", $"{Config.MoneyAmount1}g"),
-                new Response("money_1k", $"{Config.MoneyAmount2}g"),
-                new Response("money_5k", $"{Config.MoneyAmount3}g"),
-                new Response("money_10k", $"{Config.MoneyAmount4}g"),
-                new Response("money_Cancel", I18n.Menu_Cancel())
+                new("money_500", $"{Config.MoneyAmount1}g"),
+                new("money_1k", $"{Config.MoneyAmount2}g"),
+                new("money_5k", $"{Config.MoneyAmount3}g"),
+                new("money_10k", $"{Config.MoneyAmount4}g"),
+                new("money_Cancel", I18n.Menu_Cancel())
             };
 
             durationMenu = new List<Response>
             {
-                new Response("time_3D", $"{Config.DayLength1} {I18n.Menu_Days()} @ {Config.InterestModifier1 * 100}%"),
-                new Response("time_7D", $"{Config.DayLength2} {I18n.Menu_Days()} @ {Config.InterestModifier2 * 100}%"),
-                new Response("time_14D", $"{Config.DayLength3} {I18n.Menu_Days()} @ {Config.InterestModifier3 * 100}%"),
-                new Response("time_28D", $"{Config.DayLength4} {I18n.Menu_Days()} @ {Config.InterestModifier4 * 100}%"),
-                new Response("time_Cancel", I18n.Menu_Cancel())
+                new("time_3D", $"{Config.DayLength1} {I18n.Menu_Days()} @ {Config.InterestModifier1 * 100}%"),
+                new("time_7D", $"{Config.DayLength2} {I18n.Menu_Days()} @ {Config.InterestModifier2 * 100}%"),
+                new("time_14D", $"{Config.DayLength3} {I18n.Menu_Days()} @ {Config.InterestModifier3 * 100}%"),
+                new("time_28D", $"{Config.DayLength4} {I18n.Menu_Days()} @ {Config.InterestModifier4 * 100}%"),
+                new("time_Cancel", I18n.Menu_Cancel())
             };
 
             repayMenuItems = new List<Response>
             {
-                new Response("repay_show_Balance", I18n.Menu_Showbalance()),
-                new Response("repay_Custom", I18n.Menu_Repaycustom()),
-                new Response("repay_Full", I18n.Menu_Repayfull()),
-                new Response("repay_Leave", I18n.Menu_Leave())
+                new("repay_show_Balance", I18n.Menu_Showbalance()),
+                new("repay_Custom", I18n.Menu_Repaycustom()),
+                new("repay_Full", I18n.Menu_Repayfull()),
+                new("repay_Leave", I18n.Menu_Leave())
             };
 
             menuYesNo = new List<Response>
             {
-                new Response("menu_Yes", I18n.Menu_Yes()),
-                new Response("menu_No", I18n.Menu_No()),
-                new Response("menu_Leave", I18n.Menu_Leave())
+                new("menu_Yes", I18n.Menu_Yes()),
+                new("menu_No", I18n.Menu_No()),
+                new("menu_Leave", I18n.Menu_Leave())
             };
         }
-
-        //private void StartMobileBorrow()
-        //{
-        //    mobileApi.SetAppRunning(true);
-        //    mobileApi.SetRunningApp(Helper.ModRegistry.ModID);
-        //    StartBorrow(1, "Key_Amount");
-        //}
 
         private void StartBorrow(int stage, string key)
         {
             var Gamer = Game1.currentLocation;
-            //check if player isnt already borrowing
             if (!loanManager.IsBorrowing)
             {
                 switch (stage)
@@ -66,7 +58,6 @@ namespace LoanMod
                             Gamer.createQuestionDialogue(I18n.Msg_Startborrow1(), menuItems.ToArray(), BorrowMenu);
                         break;
                     case 2:
-                        //Game1.activeClickableMenu = new NumberSelectionMenu(i18n.Get("msg.startborrow-2"), (val, cost, farmer) => ProcessBorrowing(val, cost, farmer, key), -1, 1);
                         Gamer.createQuestionDialogue(I18n.Msg_Startborrow2(), durationMenu.ToArray(), BorrowDuration);
                         break;
                 }
@@ -83,9 +74,6 @@ namespace LoanMod
                         break;
                 }
             }
-
-            //if (mobileApi?.GetRunningApp() == Helper.ModRegistry.ModID)
-            //    mobileApi.SetAppRunning(false);
         }
 
         private void ProcessBorrowing(int val, string key)
