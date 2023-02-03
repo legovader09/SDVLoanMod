@@ -38,7 +38,7 @@ Note: By default, the shorter the loan is the higher the interest rate will be, 
 | Chinese    | Credit to [Puffeeydii](https://www.nexusmods.com/stardewvalley/users/122749553)   | [X](LoanMod/i18n/zh.json) |
 | German    | Credit to [legovader09](https://github.com/legovader09)   | [X](LoanMod/i18n/de.json) |
 | Russian    | Credit to [Sharaj](https://steamcommunity.com/id/Sharaj/myworkshopfiles)   | [X](LoanMod/i18n/ru.json) |
-| Japanese    | Credit to anonymous   | [X](LoanMod/i18n/ja.json) |
+| Japanese    | Credit to Machina_Ex   | [X](LoanMod/i18n/ja.json) |
 
 ### Contributing
 - If you would like to contribute with language translations, please follow the steps below:
