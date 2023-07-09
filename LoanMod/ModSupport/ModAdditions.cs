@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using System.IO;
 using LoanMod.Common;
+using LoanMod.Common.Constants;
 
 namespace LoanMod
 {
@@ -11,7 +12,7 @@ namespace LoanMod
         private IMobilePhoneApi _mobileApi;
         private void AddModFunctions()
         {
-            var configMenu = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+            var configMenu = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>(ModConstants.ModConfigMenu);
             if (configMenu != null)
             {
                 // register mod
@@ -28,13 +29,13 @@ namespace LoanMod
                 AdvancedSelection(configMenu);
             }
 
-            _mobileApi = Helper.ModRegistry.GetApi<IMobilePhoneApi>("aedenthorn.MobilePhone");
+            _mobileApi = Helper.ModRegistry.GetApi<IMobilePhoneApi>(ModConstants.MobilePhoneMod);
 
             if (_mobileApi == null || !_config.AddMobileApp) return;
 
-            var appIcon = Helper.ModContent.Load<Texture2D>(Path.Combine("assets", "app_icon.png"));
-            var success = _mobileApi.AddApp(Helper.ModRegistry.ModID, I18n.App_Name(), () => StartBorrow(1, "Key_Amount"), appIcon);
-            Monitor.Log($"loaded phone app successfully: {success}", LogLevel.Debug);
+            var appIcon = Helper.ModContent.Load<Texture2D>(Path.Combine(ModConstants.AssetFolder, ModConstants.AppIcon));
+            var success = _mobileApi.AddApp(Helper.ModRegistry.ModID, I18n.App_Name(), () => StartBorrow(1, ModConstants.BorrowAmountKey), appIcon);
+            Monitor.Log($"Loaded phone app successfully: {success}", LogLevel.Debug);
         }
 
         private void AdvancedSelection(IGenericModConfigMenuApi configMenu)
@@ -106,6 +107,7 @@ namespace LoanMod
                 name: () => "Add Mobile App"
             );
         }
+        
         private void LegacyMoneySection(IGenericModConfigMenuApi configMenu)
         {
             configMenu.AddSectionTitle(
@@ -154,6 +156,7 @@ namespace LoanMod
                 interval: 100f
             );
         }
+        
         private void DurationSection(IGenericModConfigMenuApi configMenu)
         {
             configMenu.AddSectionTitle(
@@ -194,6 +197,7 @@ namespace LoanMod
                 name: () => "Duration Option 4"
             );
         }
+        
         private void InterestSection(IGenericModConfigMenuApi configMenu)
         {
             configMenu.AddSectionTitle(

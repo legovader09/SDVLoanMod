@@ -1,4 +1,5 @@
 ﻿using System;
+using LoanMod.Common.Enums;
 using LoanMod.Common.Interfaces;
 
 namespace LoanMod.Common
@@ -17,6 +18,7 @@ namespace LoanMod.Common
         public float LateChargeRate { get; set; }
         public int LateChargeAmount { get; set; }
         public int LateDays { get; set; }
+        public Stages CurrentStage { get; set; }
 
         public double CalculateBalance
         {
@@ -48,7 +50,7 @@ namespace LoanMod.Common
                 return Math.Round(daily, MidpointRounding.AwayFromZero);
             }
         }
-        
+
         public void InitiateReset()
         {
             IsBorrowing = false;

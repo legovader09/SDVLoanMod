@@ -2,9 +2,9 @@
 
 namespace LoanMod
 {
-    public partial class ModEntry
+    public class ExtensionHelper
     {
-        private static void AddMessage(string message, int messageType)
+        public static void AddMessage(string message, int messageType)
         {
             Game1.addHUDMessage(new HUDMessage(message, messageType));
         }

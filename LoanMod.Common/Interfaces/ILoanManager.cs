@@ -1,4 +1,6 @@
-﻿namespace LoanMod.Common.Interfaces
+﻿using LoanMod.Common.Enums;
+
+namespace LoanMod.Common.Interfaces
 {
     public interface ILoanManager
     {
@@ -81,6 +83,11 @@
         /// <param>Calculates the late payment fee amount based on the balance left to pay.</param>
         /// </summary>
         double CalculateLateFees { get; }
+
+        /// <summary>
+        /// <param>Used to determine if the player is currently going through a borrowing/repayment process</param>
+        /// </summary>
+        Stages CurrentStage { get; set; }
 
         /// <summary>
         /// <param>Resets the mod.</param>

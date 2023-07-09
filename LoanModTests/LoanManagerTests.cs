@@ -6,20 +6,15 @@ namespace LoanModTests
 {
     public class LoanManagerTests
     {
-        private readonly ILoanManager _loanManager;
-
-        public LoanManagerTests()
+        private readonly ILoanManager _loanManager = new LoanManager
         {
-            _loanManager = new LoanManager
-            {
-                AmountBorrowed = 500,
-                AmountRepaid = 200,
-                AmountRepaidToday = 200,
-                Interest = 0.1f,
-                Duration = 2,
-                LateChargeRate = 0.1f,
-            };
-        }
+            AmountBorrowed = 500,
+            AmountRepaid = 200,
+            AmountRepaidToday = 200,
+            Interest = 0.1f,
+            Duration = 2,
+            LateChargeRate = 0.1f,
+        };
 
         [Fact]
         public void CalculateBalance_ReturnsZero_IfEmpty()
