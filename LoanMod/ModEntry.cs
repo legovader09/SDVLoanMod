@@ -137,9 +137,6 @@ namespace LoanMod
                 if (_loanManager.Balance < _loanManager.DailyAmount) _loanManager.DailyAmount = _loanManager.Balance;
                 if (_loanManager.HasPaid)
                 {
-                    if (_loanManager.DailyAmount > 0)
-                        ExtensionHelper.AddMessage(I18n.Msg_Payment_Complete(_loanManager.CalculateAmountToPayToday.ToString("N0")), HUDMessage.achievement_type);
-
                     _loanManager.AmountRepaidToday = 0;
                     _loanManager.HasPaid = false;
                 }
@@ -234,12 +231,11 @@ namespace LoanMod
 
         private void RepayAmount(int amount)
         {
+            if (amount == 0) return;
             Game1.player.Money -= amount;
-            _loanManager.AmountRepaid += amount;
             _loanManager.Balance -= amount;
-
-            if (amount < _loanManager.Balance)
-                _loanManager.AmountRepaidToday += amount;
+            _loanManager.AmountRepaid += amount;
+            _loanManager.AmountRepaidToday += amount;
 
             ExtensionHelper.AddMessage(I18n.Msg_Payment_Complete(amount.ToString("N0")), HUDMessage.achievement_type);
         }

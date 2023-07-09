@@ -47,7 +47,7 @@ namespace LoanMod
 
             configMenu.AddParagraph(
                 mod: ModManifest,
-                text: () => "Only modify these values if you absolutely have to."
+                text: () => "Only modify these values if you need to."
             );
 
             configMenu.AddBoolOption(
@@ -61,7 +61,7 @@ namespace LoanMod
             configMenu.AddBoolOption(
                 mod: ModManifest,
                 name: () => "Reset Loan Profile",
-                tooltip: () => "Resets the loan profile on the next save file you load.",
+                tooltip: () => "Resets the loan profile on the next save file you load. NOTE: This removes your current loan, but does not deduct the loaned money from you.",
                 getValue: () => _config.Reset,
                 setValue: value => _config.Reset = value
             );
@@ -111,9 +111,9 @@ namespace LoanMod
         private void LegacyMoneySection(IGenericModConfigMenuApi configMenu)
         {
             configMenu.AddSectionTitle(
-                   mod: ModManifest,
-                   text: () => "Money Amount Dialog"
-               );
+                mod: ModManifest,
+                text: () => "Money Amount Dialog"
+            );
 
             configMenu.AddParagraph(
                 mod: ModManifest,
@@ -160,9 +160,9 @@ namespace LoanMod
         private void DurationSection(IGenericModConfigMenuApi configMenu)
         {
             configMenu.AddSectionTitle(
-                      mod: ModManifest,
-                      text: () => "Loan Duration Menu Options"
-                  );
+                mod: ModManifest,
+                text: () => "Loan Duration Menu Options"
+            );
 
             configMenu.AddParagraph(
                 mod: ModManifest,
@@ -201,9 +201,9 @@ namespace LoanMod
         private void InterestSection(IGenericModConfigMenuApi configMenu)
         {
             configMenu.AddSectionTitle(
-                      mod: ModManifest,
-                      text: () => "Interest Menu Options"
-                  );
+                mod: ModManifest,
+                text: () => "Interest Menu Options"
+            );
 
             configMenu.AddParagraph(
                 mod: ModManifest,

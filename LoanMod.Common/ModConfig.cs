@@ -1,5 +1,4 @@
-﻿using LoanMod.Common.Interfaces;
-using StardewModdingAPI;
+﻿using StardewModdingAPI;
 
 namespace LoanMod.Common
 {

@@ -122,16 +122,16 @@ namespace LoanMod
             switch (dur)
             {
                 case MenuConstants.DurationOptionOne:
-                    SetDurationAndInterest(_config.DayLength1, _config.InterestModifier1, _config.DayLength1);
+                    SetDurationAndInterest(_config.DayLength1, _config.InterestModifier1);
                     break;
                 case MenuConstants.DurationOptionTwo:
-                    SetDurationAndInterest(_config.DayLength2, _config.InterestModifier2, _config.DayLength2);
+                    SetDurationAndInterest(_config.DayLength2, _config.InterestModifier2);
                     break;
                 case MenuConstants.DurationOptionThree:
-                    SetDurationAndInterest(_config.DayLength3, _config.InterestModifier3, _config.DayLength3);
+                    SetDurationAndInterest(_config.DayLength3, _config.InterestModifier3);
                     break;
                 case MenuConstants.DurationOptionFour:
-                    SetDurationAndInterest(_config.DayLength4, _config.InterestModifier4, _config.DayLength4);
+                    SetDurationAndInterest(_config.DayLength4, _config.InterestModifier4);
                     break;
                 case MenuConstants.OptionCancel:
                     _loanManager.CurrentStage = Stages.Borrowing;
@@ -139,11 +139,11 @@ namespace LoanMod
             }
         }
 
-        private void SetDurationAndInterest(int duration, float interest, int durationText)
+        private void SetDurationAndInterest(int duration, float interest)
         {
             _duration = duration;
             _interest = interest;
-            Monitor.Log($"Selected {durationText} days.");
+            Monitor.Log($"Selected {duration} days.");
         }
 
         private void RepayMenu(Farmer who, string option)
@@ -151,7 +151,7 @@ namespace LoanMod
             switch (option)
             {
                 case MenuConstants.ShowBalance:
-                    ExtensionHelper.AddMessage(I18n.Msg_Payment_Remaining(_loanManager.Balance.ToString("N0"), _loanManager.Duration, _loanManager.CalculateAmountToPayToday.ToString("N0")), HUDMessage.newQuest_type);
+                    ExtensionHelper.AddMessage(I18n.Msg_Payment_Remaining(_loanManager.Balance.ToString("N0"), _loanManager.Duration, _loanManager.DailyAmount.ToString("N0")), HUDMessage.newQuest_type);
                     break;
                 case MenuConstants.RepayCustom:
                     InitiateRepayment(false, true);
