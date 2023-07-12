@@ -8,7 +8,6 @@ namespace LoanMod.Common
         private int _maxBorrowAmount = 1000000;
         public SButton LoanButton { get; set; } = SButton.L;
         public bool CustomMoneyInput { get; set; } = true;
-        public int PaymentFrequency { get; set; } = 1;
         public int MaxBorrowAmount
         {
             get => _maxBorrowAmount;
